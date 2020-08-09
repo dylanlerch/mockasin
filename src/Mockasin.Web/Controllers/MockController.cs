@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Mockasin.Mocks.Router;
 
@@ -20,11 +21,38 @@ namespace Mockasin.Web.Controllers
 		public IActionResult Index()
 		{
 			var mockResult = _mockRouter.Route(Request.Method, Request.Path.Value);
-			
-			var result = new ObjectResult(mockResult);
-			result.StatusCode = mockResult.StatusCode;
+			AddMockResponseHeaders(mockResult);
 
-			return result;
+			if (mockResult.JsonBody is object)
+			{
+				return new JsonResult(mockResult.JsonBody)
+				{
+					StatusCode = mockResult.StatusCode
+				};
+			}
+			else if (mockResult.StringBody is object)
+			{
+				return new ContentResult
+				{
+					Content = mockResult.StringBody,
+					StatusCode = mockResult.StatusCode
+				};
+			}
+			else
+			{
+				return new StatusCodeResult(mockResult.StatusCode);
+			}
+		}
+
+		private void AddMockResponseHeaders(MockResponse response)
+		{
+			if (response.Headers is object)
+			{
+				foreach (var header in response.Headers)
+				{
+					Response.Headers.Add(header.Key, header.Value);
+				}
+			}
 		}
 	}
 }

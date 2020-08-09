@@ -5,8 +5,8 @@ using System.Security;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Mockasin.Mocks.Validation.Abstractions;
 
 namespace Mockasin.Mocks.Endpoints
 {
@@ -21,12 +21,14 @@ namespace Mockasin.Mocks.Endpoints
 		[JsonIgnore]
 		public string ErrorMessage { get; private set; }
 
-		public static EndpointsRoot LoadFromFile(string fileName, ILogger logger = null)
+		public static EndpointsRoot LoadFromFile(string fileName, IMockSectionValidator<EndpointsRoot> validator, ILogger logger = null)
 		{
+			EndpointsRoot root = null;
+
 			try
 			{
 				var file = File.ReadAllText(fileName);
-				return JsonSerializer.Deserialize<EndpointsRoot>(file);
+				root = JsonSerializer.Deserialize<EndpointsRoot>(file);
 			}
 			catch (Exception e) when (e is ArgumentException || e is ArgumentNullException || e is PathTooLongException || e is DirectoryNotFoundException || e is IOException || e is UnauthorizedAccessException || e is FileNotFoundException || e is NotSupportedException || e is SecurityException)
 			{
@@ -45,17 +47,40 @@ namespace Mockasin.Mocks.Endpoints
 			catch (Exception e)
 			{
 				var errorMessage = $"An unexpected error occurred attemping to read the configuration file.";
-				
+
 				if (logger is object)
 				{
 					logger.LogError(e, errorMessage);
 				}
-				
+
 				return new EndpointsRoot
 				{
 					ErrorMessage = errorMessage
 				};
 			}
+
+			var validationResult = validator.Validate(root);
+
+			if (validationResult.HasErrors)
+			{
+				var errorMessage = new StringBuilder();
+				errorMessage.AppendLine("Configuration file was read correctly but failed validation. Errors:");
+
+				foreach (var validationError in validationResult.Errors)
+				{
+					errorMessage.AppendLine($"  - {validationError}");
+				}
+
+				// Remove the final new line character
+				errorMessage.Length--;
+
+				return new EndpointsRoot
+				{
+					ErrorMessage = errorMessage.ToString()
+				};
+			}
+
+			return root;
 		}
 	}
 }

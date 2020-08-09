@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Mockasin.Mocks.Configuration;
 using Mockasin.Mocks.Endpoints;
+using Mockasin.Mocks.Validation.Abstractions;
 
 namespace Mockasin.Mocks.Router
 {
@@ -8,18 +9,20 @@ namespace Mockasin.Mocks.Router
 	{
 		private EndpointsRoot _responses;
 		private IMockSettings _settings;
+		private IMockSectionValidator<EndpointsRoot> _validator;
 		private ILogger<MockRouter> _logger;
 
-		public MockRouter(IMockSettings settings, ILogger<MockRouter> logger)
+		public MockRouter(IMockSettings settings, IMockSectionValidator<EndpointsRoot> validator, ILogger<MockRouter> logger)
 		{
 			_settings = settings;
+			_validator = validator;
 			_logger = logger;
 		}
 
 		public MockResponse Route(string verb, string route)
 		{
 			// Always reload data on each request while were building and testing things
-			_responses = EndpointsRoot.LoadFromFile(_settings.Mock.ConfigurationPath, _logger);
+			_responses = EndpointsRoot.LoadFromFile(_settings.Mock.ConfigurationPath, _validator, _logger);
 
 			if (_responses.IsInvalid)
 			{

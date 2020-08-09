@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mockasin.Mocks.Configuration;
+using Mockasin.Mocks.Endpoints;
 using Mockasin.Mocks.Router;
+using Mockasin.Mocks.Validation;
+using Mockasin.Mocks.Validation.Abstractions;
 using Mockasin.Web.Configuration;
 
 namespace Mockasin.Web
@@ -28,6 +31,11 @@ namespace Mockasin.Web
 			services.AddSingleton<IMockSettings>(c => c.GetService<Settings>());
 			
 			services.AddSingleton<IMockRouter, MockRouter>();
+
+			services.AddSingleton<IMockSectionValidator<Response>, ResponseValidator>();
+			services.AddSingleton<IMockSectionValidator<Action>, ActionValidator>();
+			services.AddSingleton<IMockSectionValidator<Endpoint>, EndpointValidator>();
+			services.AddSingleton<IMockSectionValidator<EndpointsRoot>, EndpointsRootValidator>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
