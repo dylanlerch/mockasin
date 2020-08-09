@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mockasin.Mocks;
 using Mockasin.Mocks.Configuration;
+using Mockasin.Mocks.Router;
 using Mockasin.Web.Configuration;
 
 namespace Mockasin.Web

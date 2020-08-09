@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Mockasin.Mocks;
+using Mockasin.Mocks.Router;
 
 namespace Mockasin.Web.Controllers
 {

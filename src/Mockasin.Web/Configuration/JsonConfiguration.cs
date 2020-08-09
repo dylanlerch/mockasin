@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mockasin.Web
+namespace Mockasin.Web.Configuration
 {
 	public static class JsonConfiguration
 	{

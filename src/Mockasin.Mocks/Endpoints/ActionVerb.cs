@@ -1,4 +1,4 @@
-namespace Mockasin.Mocks.Models
+namespace Mockasin.Mocks.Endpoints
 {
 	public static class ActionVerb
 	{

@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using Mockasin.Mocks.Configuration;
-using Mockasin.Mocks.Models;
+using Mockasin.Mocks.Endpoints;
 
-namespace Mockasin.Mocks
+namespace Mockasin.Mocks.Router
 {
 	public class MockRouter : IMockRouter
 	{

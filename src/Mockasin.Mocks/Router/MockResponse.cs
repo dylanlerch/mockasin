@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Mockasin.Mocks
+namespace Mockasin.Mocks.Router
 {
 	public class MockResponse
 	{

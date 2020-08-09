@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Mockasin.Mocks.Models
+namespace Mockasin.Mocks.Endpoints
 {
 	public class Response
 	{
