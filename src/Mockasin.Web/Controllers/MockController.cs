@@ -5,7 +5,7 @@ using Mockasin.Mocks;
 
 namespace Mockasin.Web.Controllers
 {
-	[ApiController]
+	[Controller]
 	public class MockController : ControllerBase
 	{
 		private readonly ILogger<MockController> _logger;

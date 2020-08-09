@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mockasin.Mocks.Configuration;
 using Mockasin.Mocks.Models;
 
 namespace Mockasin.Mocks
@@ -7,9 +8,9 @@ namespace Mockasin.Mocks
 	{
 		private EndpointsRoot _responses = new EndpointsRoot();
 
-		public MockRouter(string path)
+		public MockRouter(IMockSettings settings)
 		{
-			_responses = EndpointsRoot.LoadFromFile(path);
+			_responses = EndpointsRoot.LoadFromFile(settings.Mock.ConfigurationPath);
 		}
 
 		public MockResponse Route(string verb, string route)

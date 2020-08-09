@@ -11,7 +11,9 @@
 			"preLaunchTask": "build",
 			// If you have changed target frameworks, make sure to update the program path.
 			"program": "${workspaceFolder}/src/Mockasin.Web/bin/Debug/netcoreapp3.1/Mockasin.Web.dll",
-			"args": [],
+			"args": [
+				"Mock:ConfigurationPath=../../examples/test.json"
+			],
 			"cwd": "${workspaceFolder}/src/Mockasin.Web",
 			"logging": {
 				"moduleLoad": false
