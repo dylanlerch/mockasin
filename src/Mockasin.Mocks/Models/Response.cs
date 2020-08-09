@@ -9,10 +9,10 @@ namespace Mockasin.Mocks.Models
 		[JsonPropertyName("statusCode")]
 		public int StatusCode { get; set; } = 200;
 
-		[JsonPropertyName("body")]
-		public JsonElement Body { get; set; }
-
 		[JsonPropertyName("headers")]
 		public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+
+		[JsonPropertyName("jsonBody")]
+		public JsonElement jsonBody { get; set; }
 	}
 }

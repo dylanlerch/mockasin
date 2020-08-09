@@ -1,4 +1,5 @@
 {
+	"$schema": "../schema/mock-responses.schema.json",
 	"endpoints": [
 		{
 			"path": "test/path",
@@ -10,14 +11,31 @@
 					"responses": [
 						{
 							"statusCode": 200,
-							"body": {
+							"headers": {
+								"test": "string",
+								"another": "string"
+							},
+							"jsonBody": {
 								"Hello": "World"
 							}
 						}
 					]
 				}
 			],
-			"endpoints": []
+			"endpoints": [
+				{
+					"path": "path",
+					"actions": [
+						{
+							"responses": [
+								{
+									
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 	]
 }
