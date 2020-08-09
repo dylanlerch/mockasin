@@ -32,71 +32,7 @@
 					"type": "array",
 					"minItems": 1,
 					"items": {
-						"type": "object",
-						"properties": {
-							"verb": {
-								"type": "string",
-								"description": "HTTP verb that triggers this action. If there are multiple actions with the same verb, the first listed action will be triggered.",
-								"default": "ANY",
-								"enum": [
-									"ANY",
-									"GET",
-									"POST",
-									"PUT",
-									"PATCH",
-									"DELETE",
-									"OPTIONS",
-									"HEAD"
-								]
-							},
-							"mode": {
-								"type": "string",
-								"description": "Mode for selecting a response to return. Single always returns a single response (control using singleResponseIndex property). Random returns a random response (control the change of specific responses using the randomChance field in the response). Intercept prompts the user to select a response.",
-								"enum": [
-									"Single",
-									"Random",
-									"Intercept"
-								]
-							},
-							"singleResponseIndex": {
-								"type": "integer",
-								"description": "The zero-based index of the response to return when in 'Single' response mode. If the given index is not valid, the first response will be returned.",
-								"default": 0
-							},
-							"responses": {
-								"type": "array",
-								"minItems": 1,
-								"items": {
-									"type": "object",
-									"properties": {
-										"statusCode": {
-											"type": "integer",
-											"description": "HTTP status code to return with the response",
-											"default": 200
-										},
-										"randomWeight": {
-											"type": "integer",
-											"description": "The chance of returning this specific response when in Random response mode. Weights are relative to other responses for this action (response with a weight of 2 is twice as likely as be returned as response with a weight of 1). Set to 0 for the response to never be returned in random mode.",
-											"default": 1
-										},
-										"headers": {
-											"type": "object",
-											"description": "HTTP headers to return with the response",
-											"additionalProperties": {
-												"type": "string"
-											}
-										},
-										"jsonBody": {
-											"type": "object",
-											"description": "JSON body to return as the response"
-										}
-									},
-									"additionalProperties": false
-								}
-							}
-						},
-						"additionalProperties": false,
-						"required": ["responses"]
+						"$ref": "#/definitions/action"
 					}
 				},
 				"endpoints": {
@@ -108,8 +44,81 @@
 				}
 			},
 			"required": [
-				"path", "actions"
+				"path",
+				"actions"
 			],
+			"additionalProperties": false
+		},
+		"action": {
+			"type": "object",
+			"properties": {
+				"verb": {
+					"type": "string",
+					"description": "HTTP verb that triggers this action. If there are multiple actions with the same verb, the first listed action will be triggered.",
+					"default": "ANY",
+					"examples": [
+						"ANY",
+						"GET",
+						"POST",
+						"PUT",
+						"PATCH",
+						"DELETE",
+						"OPTIONS",
+						"HEAD"
+					]
+				},
+				"mode": {
+					"type": "string",
+					"description": "Mode for selecting a response to return. Single always returns a single response (control using singleResponseIndex property). Random returns a random response (control the change of specific responses using the randomChance field in the response). Intercept prompts the user to select a response.",
+					"enum": [
+						"Single",
+						"Random",
+						"Intercept"
+					]
+				},
+				"singleResponseIndex": {
+					"type": "integer",
+					"description": "The zero-based index of the response to return when in 'Single' response mode. If the given index is not valid, the first response will be returned.",
+					"default": 0
+				},
+				"responses": {
+					"type": "array",
+					"minItems": 1,
+					"items": {
+						"$ref": "#/definitions/response"
+					}
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"responses"
+			]
+		},
+		"response": {
+			"type": "object",
+			"properties": {
+				"statusCode": {
+					"type": "integer",
+					"description": "HTTP status code to return with the response",
+					"default": 200
+				},
+				"randomWeight": {
+					"type": "integer",
+					"description": "The chance of returning this specific response when in Random response mode. Weights are relative to other responses for this action (response with a weight of 2 is twice as likely as be returned as response with a weight of 1). Set to 0 for the response to never be returned in random mode.",
+					"default": 1
+				},
+				"headers": {
+					"type": "object",
+					"description": "HTTP headers to return with the response",
+					"additionalProperties": {
+						"type": "string"
+					}
+				},
+				"jsonBody": {
+					"type": "object",
+					"description": "JSON body to return as the response"
+				}
+			},
 			"additionalProperties": false
 		}
 	}
