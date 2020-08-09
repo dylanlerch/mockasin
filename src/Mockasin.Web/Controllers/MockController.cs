@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
+using Mockasin.Mocks.Endpoints;
 using Mockasin.Mocks.Router;
 
 namespace Mockasin.Web.Controllers
@@ -44,7 +45,7 @@ namespace Mockasin.Web.Controllers
 			}
 		}
 
-		private void AddMockResponseHeaders(MockResponse response)
+		private void AddMockResponseHeaders(Response response)
 		{
 			if (response.Headers is object)
 			{

@@ -1,7 +1,9 @@
+using Mockasin.Mocks.Endpoints;
+
 namespace Mockasin.Mocks.Router
 {
 	public interface IMockRouter
 	{
-		MockResponse Route(string verb, string route);
+		Response Route(string verb, string route);
 	}
 }

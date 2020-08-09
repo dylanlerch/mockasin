@@ -19,7 +19,7 @@ namespace Mockasin.Mocks.Router
 			_logger = logger;
 		}
 
-		public MockResponse Route(string verb, string route)
+		public Response Route(string verb, string route)
 		{
 			// Always reload data on each request while were building and testing things
 			_responses = EndpointsRoot.LoadFromFile(_settings.Mock.ConfigurationPath, _validator, _logger);
@@ -30,7 +30,7 @@ namespace Mockasin.Mocks.Router
 				// loading the file, reading the JSON, or any custom validation
 				// that has failed. If it's in an error state, return that error
 				// to the caller.
-				return new MockResponse
+				return new Response
 				{
 					StatusCode = 500,
 					StringBody = _responses.ErrorMessage
@@ -38,7 +38,7 @@ namespace Mockasin.Mocks.Router
 			}
 
 			// Otherwise, we know we have a valid endpoint structure.
-			return new MockResponse();
+			return new Response();
 		}
 	}
 }

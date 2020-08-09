@@ -13,6 +13,9 @@ namespace Mockasin.Mocks.Endpoints
 		public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
 		[JsonPropertyName("jsonBody")]
-		public JsonElement jsonBody { get; set; }
+		public JsonElement? JsonBody { get; set; }
+
+		[JsonPropertyName("stringBody")]
+		public string StringBody { get; set; }
 	}
 }
