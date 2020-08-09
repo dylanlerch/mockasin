@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Mockasin.Core;
+using Mockasin.Mocks;
 
 namespace Mockasin.Web.Controllers
 {
-	[Controller]
+	[ApiController]
 	public class MockController : ControllerBase
 	{
 		private readonly ILogger<MockController> _logger;

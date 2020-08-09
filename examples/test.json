@@ -1,0 +1,23 @@
+{
+	"endpoints": [
+		{
+			"path": "test/path",
+			"actions": [
+				{
+					"verb": "GET",
+					"mode": "Single",
+					"singleResponseIndex": 0,
+					"responses": [
+						{
+							"statusCode": 200,
+							"body": {
+								"Hello": "World"
+							}
+						}
+					]
+				}
+			],
+			"endpoints": []
+		}
+	]
+}

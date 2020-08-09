@@ -1,4 +1,4 @@
-namespace Mockasin.Core
+namespace Mockasin.Mocks
 {
 	public interface IMockRouter
 	{

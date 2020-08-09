@@ -1,6 +1,6 @@
-namespace Mockasin.Core.Responses
+namespace Mockasin.Mocks.Models
 {
-	public class EndpointVerb
+	public static class ActionVerb
 	{
 		public static readonly string Any = "ANY";
 		public static readonly string Get = "GET";
