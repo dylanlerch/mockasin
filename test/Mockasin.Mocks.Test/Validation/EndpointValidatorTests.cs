@@ -9,13 +9,13 @@ namespace Mockasin.Mocks.Test.Validation
 {
 	public class EndpointValidatorTests
 	{
-		private readonly Mock<IMockSectionValidator<Action>> _actionValidator = new Mock<IMockSectionValidator<Action>>();
+		private readonly Mock<IMockSectionValidator<EndpointAction>> _actionValidator = new Mock<IMockSectionValidator<EndpointAction>>();
 		private readonly SectionName _name = new SectionName("$");
 		private readonly string _defaultValidPath = "path";
 		private readonly string _defaultInvalidPath = "!!-invalid";
-		private readonly List<Action> _defaultValidActionList = new List<Action>
+		private readonly List<EndpointAction> _defaultValidActionList = new List<EndpointAction>
 		{
-			new Action {}
+			new EndpointAction {}
 		};
 
 		[Fact]
@@ -127,7 +127,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var section = new Endpoint
 			{
 				Path = _defaultValidPath,
-				Actions = new List<Action>()
+				Actions = new List<EndpointAction>()
 			};
 
 			// Act
@@ -144,11 +144,11 @@ namespace Mockasin.Mocks.Test.Validation
 		{
 			// Arrange
 			var validator = new EndpointValidator(_actionValidator.Object);
-			var action = new Action();
+			var action = new EndpointAction();
 			var section = new Endpoint
 			{
 				Path = _defaultValidPath,
-				Actions = new List<Action>
+				Actions = new List<EndpointAction>
 				{
 					action
 				}
@@ -170,13 +170,13 @@ namespace Mockasin.Mocks.Test.Validation
 		{
 			// Arrange
 			var validator = new EndpointValidator(_actionValidator.Object);
-			var action1 = new Action();
-			var action2 = new Action();
-			var action3 = new Action();
+			var action1 = new EndpointAction();
+			var action2 = new EndpointAction();
+			var action3 = new EndpointAction();
 			var section = new Endpoint
 			{
 				Path = _defaultValidPath,
-				Actions = new List<Action>
+				Actions = new List<EndpointAction>
 				{
 					action1,
 					action2,
@@ -277,7 +277,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var invalidValidationResult = new ValidationResult();
 			invalidValidationResult.AddError(new SectionName("$"), "Something broke");
 			_actionValidator.Setup(
-				m => m.Validate(It.IsAny<Action>(), It.IsAny<SectionName>())
+				m => m.Validate(It.IsAny<EndpointAction>(), It.IsAny<SectionName>())
 			).Returns(invalidValidationResult);
 
 			// Act

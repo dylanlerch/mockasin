@@ -33,7 +33,7 @@ namespace Mockasin.Web
 			services.AddSingleton<IMockRouter, MockRouter>();
 
 			services.AddSingleton<IMockSectionValidator<Response>, ResponseValidator>();
-			services.AddSingleton<IMockSectionValidator<Action>, ActionValidator>();
+			services.AddSingleton<IMockSectionValidator<EndpointAction>, EndpointActionValidator>();
 			services.AddSingleton<IMockSectionValidator<Endpoint>, EndpointValidator>();
 			services.AddSingleton<IMockSectionValidator<EndpointsRoot>, EndpointsRootValidator>();
 		}

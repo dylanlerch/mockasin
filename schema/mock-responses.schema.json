@@ -70,9 +70,9 @@
 					"type": "string",
 					"description": "Mode for selecting a response to return. Single always returns a single response (control using singleResponseIndex property). Random returns a random response (control the change of specific responses using the randomChance field in the response). Intercept prompts the user to select a response.",
 					"enum": [
-						"Single",
-						"Random",
-						"Intercept"
+						"SINGLE",
+						"RANDOM",
+						"INTERCEPT"
 					]
 				},
 				"singleResponseIndex": {
@@ -116,6 +116,14 @@
 				"jsonBody": {
 					"type": "object",
 					"description": "JSON body to return as the response"
+				},
+				"xmlBody": {
+					"type": "string",
+					"description": "XML body to return as the response"
+				},
+				"stringBody": {
+					"type": "string",
+					"description": "String body to return as the response"
 				}
 			},
 			"additionalProperties": false

@@ -15,6 +15,9 @@ namespace Mockasin.Mocks.Endpoints
 		[JsonPropertyName("jsonBody")]
 		public JsonElement? JsonBody { get; set; }
 
+		[JsonPropertyName("xmlBody")]
+		public string XmlBody { get; set; }
+
 		[JsonPropertyName("stringBody")]
 		public string StringBody { get; set; }
 	}

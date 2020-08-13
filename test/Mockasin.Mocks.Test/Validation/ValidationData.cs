@@ -13,5 +13,13 @@ namespace Mockasin.Mocks.Test.Validation
 				new object[] { " 	" },
 				new object[] { "\t\n" }
 			};
+
+		public static IEnumerable<object[]> Whitespace =>
+			new List<object[]>
+			{
+				new object[] { "" },
+				new object[] { " 	" },
+				new object[] { "\t\n" }
+			};
 	}
 }

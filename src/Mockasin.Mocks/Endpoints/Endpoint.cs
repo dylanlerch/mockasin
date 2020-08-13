@@ -9,7 +9,7 @@ namespace Mockasin.Mocks.Endpoints
 		public string Path { get; set; }
 
 		[JsonPropertyName("actions")]
-		public List<Action> Actions { get; set; }
+		public List<EndpointAction> Actions { get; set; }
 		
 		[JsonPropertyName("endpoints")]
 		public List<Endpoint> Endpoints { get; set; } = new List<Endpoint>();

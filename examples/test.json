@@ -6,7 +6,7 @@
 			"actions": [
 				{
 					"verb": "GET",
-					"mode": "Single",
+					"mode": "SINGLE",
 					"singleResponseIndex": 0,
 					"responses": [
 						{
