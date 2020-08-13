@@ -24,7 +24,7 @@ namespace Mockasin.Mocks.Endpoints
 
 		public static EndpointsRoot LoadFromFile(string fileName, IMockSectionValidator<EndpointsRoot> validator, ILogger logger = null)
 		{
-			EndpointsRoot root = null;
+			EndpointsRoot root;
 
 			try
 			{

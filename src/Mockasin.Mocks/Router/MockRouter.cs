@@ -8,9 +8,9 @@ namespace Mockasin.Mocks.Router
 	public class MockRouter : IMockRouter
 	{
 		private EndpointsRoot _responses;
-		private IMockSettings _settings;
-		private IMockSectionValidator<EndpointsRoot> _validator;
-		private ILogger<MockRouter> _logger;
+		private readonly IMockSettings _settings;
+		private readonly IMockSectionValidator<EndpointsRoot> _validator;
+		private readonly ILogger<MockRouter> _logger;
 
 		public MockRouter(IMockSettings settings, IMockSectionValidator<EndpointsRoot> validator, ILogger<MockRouter> logger)
 		{

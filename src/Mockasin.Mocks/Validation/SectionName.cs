@@ -10,8 +10,6 @@ namespace Mockasin.Mocks.Validation
 		{
 			if (propertyPath is null)
 			{
-				var x = nameof(propertyPath);
-				
 				throw new ArgumentNullException(nameof(propertyPath));
 			}
 

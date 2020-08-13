@@ -5,7 +5,7 @@ namespace Mockasin.Mocks.Validation
 {
 	public class ActionValidator : IMockSectionValidator<Action>
 	{
-		private IMockSectionValidator<Response> _responseValidator;
+		private readonly IMockSectionValidator<Response> _responseValidator;
 
 		public ActionValidator(IMockSectionValidator<Response> responseValidator)
 		{
