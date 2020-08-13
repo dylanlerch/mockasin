@@ -20,8 +20,7 @@ namespace Mockasin.Mocks.Validation
 			{
 				result.AddError(sectionName, "Endpoints file is null");
 			}
-
-			if (section.Endpoints is null)
+			else if (section.Endpoints is null)
 			{
 				result.AddError(sectionName.WithProperty("endpoints"), "Endpoints array is null");
 			}
