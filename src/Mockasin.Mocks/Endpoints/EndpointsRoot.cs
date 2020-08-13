@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
+using Mockasin.Mocks.Validation;
 using Mockasin.Mocks.Validation.Abstractions;
 
 namespace Mockasin.Mocks.Endpoints
@@ -59,7 +60,7 @@ namespace Mockasin.Mocks.Endpoints
 				};
 			}
 
-			var validationResult = validator.Validate(root);
+			var validationResult = validator.Validate(root, new SectionName("$"));
 
 			if (validationResult.HasErrors)
 			{

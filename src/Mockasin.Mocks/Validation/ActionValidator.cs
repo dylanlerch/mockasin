@@ -12,7 +12,7 @@ namespace Mockasin.Mocks.Validation
 			_responseValidator = responseValidator;
 		}
 
-		public ValidationResult Validate(Action section, string sectionLocation = "")
+		public ValidationResult Validate(Action section, SectionName sectionName)
 		{
 			return new ValidationResult();
 		}

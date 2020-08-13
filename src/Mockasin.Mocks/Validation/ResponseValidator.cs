@@ -5,7 +5,7 @@ namespace Mockasin.Mocks.Validation
 {
 	public class ResponseValidator : IMockSectionValidator<Response>
 	{
-		public ValidationResult Validate(Response section, string sectionLocation = "")
+		public ValidationResult Validate(Response section, SectionName sectionName)
 		{
 			return new ValidationResult();
 		}
