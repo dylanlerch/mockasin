@@ -18,20 +18,26 @@ namespace Mockasin.Mocks.Validation
 		{
 			var result = new ValidationResult();
 
+			if (section is null)
+			{
+				result.AddError(sectionName, "Endpoint is null");
+				return result;
+			}
+
 			if (string.IsNullOrWhiteSpace(section.Path))
 			{
-				result.AddError(sectionName.WithProperty("path"), "Endpoints must have a path");
+				result.AddError(sectionName.WithProperty("path"), "Endpoint must have a path");
 			}
 			else if (!PathPattern.IsMatch(section.Path))
 			{
-				result.AddError(sectionName.WithProperty("path"), "Invalid path. Path can only contain A-Z, a-z, 0-9 and slashes (/).");
+				result.AddError(sectionName.WithProperty("path"), $"Invalid path '{section.Path}'. Path can only contain A-Z, a-z, 0-9 and slashes (/).");
 			}
 
 			if (section.Actions is null)
 			{
 				result.AddError(sectionName.WithProperty("actions"), "Endpoints must have an actions array");
 			}
-			else if (section.Actions.Count > 1)
+			else if (section.Actions.Count < 1)
 			{
 				result.AddError(sectionName.WithProperty("actions"), "Actions array must have at least one item");
 			}
