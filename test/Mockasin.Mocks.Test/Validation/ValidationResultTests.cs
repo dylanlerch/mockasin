@@ -41,7 +41,7 @@ namespace Mockasin.Mocks.Test.Validation
 
 			// Assert
 			var error = Assert.Single(result.Errors);
-			Assert.Equal("Error in sectionName: Something broke", error);
+			Assert.Equal(ErrorMessageFormatter.Format("sectionName", "Something broke"), error);
 		}
 
 		[Fact]
