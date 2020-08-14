@@ -1,0 +1,21 @@
+{
+	"endpoints": [
+		{
+			"path": "test",
+			"actions": [
+				{
+					"verb": "GET",
+					"mode": "SINGLE",
+					"singleResponseIndex": 0,
+					"responses": [
+						{
+							"jsonBody": {
+								"Hello": "World"
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

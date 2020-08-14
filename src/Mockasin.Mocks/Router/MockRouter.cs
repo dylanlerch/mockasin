@@ -24,7 +24,7 @@ namespace Mockasin.Mocks.Router
 			// Always reload data on each request while were building and testing things
 			_responses = EndpointsRoot.LoadFromFile(_settings.Mock.ConfigurationPath, _validator, _logger);
 
-			if (_responses.IsInvalid)
+			if (_responses.Status.IsInvalid)
 			{
 				// When loading the file, EndpointsRoot catches all errors with
 				// loading the file, reading the JSON, or any custom validation
@@ -33,7 +33,7 @@ namespace Mockasin.Mocks.Router
 				return new Response
 				{
 					StatusCode = 500,
-					StringBody = _responses.ErrorMessage
+					StringBody = _responses.Status.ErrorMessage
 				};
 			}
 
