@@ -5,8 +5,8 @@ namespace Mockasin.Mocks.Endpoints
 {
 	public class EndpointAction
 	{
-		[JsonPropertyName("verb")]
-		public string Verb { get; set; } = EndpointActionVerb.Any;
+		[JsonPropertyName("method")]
+		public string Method { get; set; } = EndpointActionMethod.Any;
 
 		[JsonPropertyName("mode")]
 		public string Mode { get; set; } = EndpointActionMode.Single;

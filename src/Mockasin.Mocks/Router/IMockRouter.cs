@@ -4,6 +4,6 @@ namespace Mockasin.Mocks.Router
 {
 	public interface IMockRouter
 	{
-		Response Route(string verb, string route);
+		Response Route(string method, string route);
 	}
 }

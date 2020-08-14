@@ -5,7 +5,7 @@
 			"path": "test/path",
 			"actions": [
 				{
-					"verb": "GET",
+					"method": "GET",
 					"mode": "SINGLE",
 					"singleResponseIndex": 0,
 					"responses": [

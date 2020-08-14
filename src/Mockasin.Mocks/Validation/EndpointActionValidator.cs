@@ -14,7 +14,7 @@ namespace Mockasin.Mocks.Validation
 			EndpointActionMode.Intercept,
 		};
 
-		private static readonly Regex VerbPattern = new Regex("^[A-Za-z]+$", RegexOptions.Compiled);
+		private static readonly Regex MethodPattern = new Regex("^[A-Za-z]+$", RegexOptions.Compiled);
 
 		private readonly IMockSectionValidator<Response> _responseValidator;
 
@@ -33,11 +33,11 @@ namespace Mockasin.Mocks.Validation
 				return result;
 			}
 
-			if (section.Verb is object)
+			if (section.Method is object)
 			{
-				if (!VerbPattern.IsMatch(section.Verb))
+				if (!MethodPattern.IsMatch(section.Method))
 				{
-					result.AddError(sectionName.WithProperty("verb"), $"Invalid verb '{section.Verb}'. Verb can only contain A-Z, a-z.");
+					result.AddError(sectionName.WithProperty("method"), $"Invalid method '{section.Method}'. Method can only contain A-Z, a-z.");
 				}
 			}
 

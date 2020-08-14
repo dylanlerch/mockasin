@@ -19,7 +19,7 @@ namespace Mockasin.Mocks.Router
 			_logger = logger;
 		}
 
-		public Response Route(string verb, string route)
+		public Response Route(string method, string route)
 		{
 			// Always reload data on each request while were building and testing things
 			_responses = EndpointsRoot.LoadFromFile(_settings.Mock.ConfigurationPath, _validator, _logger);

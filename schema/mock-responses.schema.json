@@ -51,9 +51,9 @@
 		"action": {
 			"type": "object",
 			"properties": {
-				"verb": {
+				"method": {
 					"type": "string",
-					"description": "HTTP verb that triggers this action. If there are multiple actions with the same verb, the first listed action will be triggered.",
+					"description": "HTTP method that triggers this action. If there are multiple actions with the same method, the first listed action will be triggered.",
 					"default": "ANY",
 					"examples": [
 						"ANY",

@@ -12,7 +12,7 @@ namespace Mockasin.Mocks.Test.Validation
 		private readonly Mock<IMockSectionValidator<Response>> _responseValidator = new Mock<IMockSectionValidator<Response>>();
 		private readonly SectionName _name = new SectionName("$");
 		
-		private readonly string _defaultInvalidVerb = "!!INVALID";
+		private readonly string _defaultInvalidMethod = "!!INVALID";
 		private readonly string _defaultInvalidMode = "NotAMode";
 		private readonly List<Response> _defaultValidResponses = new List<Response>
 		{
@@ -59,7 +59,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var section = new EndpointAction
 			{
 				Mode = null,
-				Verb = null,
+				Method = null,
 				Responses = _defaultValidResponses
 			};
 
@@ -72,13 +72,13 @@ namespace Mockasin.Mocks.Test.Validation
 
 		[Theory]
 		[MemberData(nameof(ValidationData.Whitespace), MemberType = typeof(ValidationData))]
-		public void Validate_NullAndWhitespaceVerb_ReturnsSingleError(string verb)
+		public void Validate_NullAndWhitespaceMethod_ReturnsSingleError(string method)
 		{
 			// Arrange
 			var validator = new EndpointActionValidator(_responseValidator.Object);
 			var section = new EndpointAction
 			{
-				Verb = verb,
+				Method = method,
 				Responses = _defaultValidResponses
 			};
 
@@ -88,19 +88,19 @@ namespace Mockasin.Mocks.Test.Validation
 			// Assert
 			Assert.True(result.HasErrors);
 			var error = Assert.Single(result.Errors);
-			Assert.Equal(ErrorMessageFormatter.Format("$.verb", $"Invalid verb '{verb}'. Verb can only contain A-Z, a-z."), error);
+			Assert.Equal(ErrorMessageFormatter.Format("$.method", $"Invalid method '{method}'. Method can only contain A-Z, a-z."), error);
 		}
 
 		[Theory]
 		[InlineData("Number12345")]
 		[InlineData("***##Symbols!!!")]
-		public void Validate_InvalidVerb_ReturnsSingleError(string verb)
+		public void Validate_InvalidMethod_ReturnsSingleError(string method)
 		{
 			// Arrange
 			var validator = new EndpointActionValidator(_responseValidator.Object);
 			var section = new EndpointAction
 			{
-				Verb = verb,
+				Method = method,
 				Responses = _defaultValidResponses
 			};
 
@@ -110,7 +110,7 @@ namespace Mockasin.Mocks.Test.Validation
 			// Assert
 			Assert.True(result.HasErrors);
 			var error = Assert.Single(result.Errors);
-			Assert.Equal(ErrorMessageFormatter.Format("$.verb", $"Invalid verb '{verb}'. Verb can only contain A-Z, a-z."), error);
+			Assert.Equal(ErrorMessageFormatter.Format("$.method", $"Invalid method '{method}'. Method can only contain A-Z, a-z."), error);
 		}
 
 		[Theory]
@@ -119,13 +119,13 @@ namespace Mockasin.Mocks.Test.Validation
 		[InlineData("post")]
 		[InlineData("PuT")]
 		[InlineData("SomethingMadeUp")]
-		public void Validate_ValidVerb_ReturnsNoError(string verb)
+		public void Validate_ValidMethod_ReturnsNoError(string method)
 		{
 			// Arrange
 			var validator = new EndpointActionValidator(_responseValidator.Object);
 			var section = new EndpointAction
 			{
-				Verb = verb,
+				Method = method,
 				Responses = _defaultValidResponses
 			};
 
@@ -308,13 +308,13 @@ namespace Mockasin.Mocks.Test.Validation
 		}
 
 		[Fact]
-		public void Validate_InvalidVerbAndModeAndActions_MergesErrors()
+		public void Validate_InvalidMethodAndModeAndActions_MergesErrors()
 		{
 			// Arrange
 			var validator = new EndpointActionValidator(_responseValidator.Object);
 			var section = new EndpointAction
 			{
-				Verb = _defaultInvalidVerb,
+				Method = _defaultInvalidMethod,
 				Mode = _defaultInvalidMode,
 				Responses = _defaultValidResponses
 			};
