@@ -9,6 +9,9 @@ namespace Mockasin.Mocks.Endpoints
 		[JsonPropertyName("statusCode")]
 		public int StatusCode { get; set; } = 200;
 
+		[JsonPropertyName("randomWeight")]
+		public int RandomWeight { get; set; } = 1;
+
 		[JsonPropertyName("headers")]
 		public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
