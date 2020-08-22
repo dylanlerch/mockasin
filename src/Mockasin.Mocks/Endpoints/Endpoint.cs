@@ -27,7 +27,7 @@ namespace Mockasin.Mocks.Endpoints
 				{
 					// If the path is null, can't split. Just make the split
 					// path an empty array
-					Details.SplitPath = new string[0];
+					Details.SplitPath = new string[] { "" };
 				}
 				else
 				{
@@ -35,12 +35,11 @@ namespace Mockasin.Mocks.Endpoints
 				}
 			}
 
-			if ((pathToMatch is null || pathToMatch.Length == 0) && Details.SplitPath.Length == 0)
+			if (pathToMatch is null || pathToMatch.Length == 0)
 			{
-				// If both paths are empty, then they match and there are no
-				// remaining elements.
-				remainingPath = new string[0];
-				return true;
+				// If an invalid path was passed in, convert it to the default 
+				// base empty path
+				pathToMatch = new string[] { "" };
 			}
 
 			if (pathToMatch.Length < Details.SplitPath.Length)

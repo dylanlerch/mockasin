@@ -40,9 +40,9 @@ namespace Mockasin.Mocks.Router
 
 			// Otherwise, we know we have a valid endpoint structure. Get the
 			// matching endpoint if there is one.
-			var endpoint = GetEndpointForPath(path, _responses);
+			var endpoints = GetEndpointsForPath(path, _responses);
 
-			if (endpoint is null)
+			if (endpoints.Length == 0)
 			{
 				return NotFoundResponse();
 			}
@@ -51,50 +51,40 @@ namespace Mockasin.Mocks.Router
 		}
 
 
-		public static Endpoint GetEndpointForPath(string path, EndpointsRoot root)
+		public static Endpoint[] GetEndpointsForPath(string path, EndpointsRoot root)
 		{
-			if (path is null)
-			{
-				return null;
-			}
-
 			var pathParts = path.SplitPath();
-			return GetEndpointForPathParts(pathParts, root.Endpoints);
+			return GetEndpointsForPathParts(pathParts, root.Endpoints).ToArray();
 		}
 
-		private static Endpoint GetEndpointForPathParts(string[] pathParts, List<Endpoint> endpoints)
+		private static List<Endpoint> GetEndpointsForPathParts(string[] pathParts, List<Endpoint> endpoints)
 		{
-			foreach (var endpoint in endpoints)
-			{
-				if (endpoint.MatchesPath(pathParts, out var remainingPath))
-				{
-					if (remainingPath.Length == 0)
-					{
-						// If there are no elements left in the path, then this
-						// endpoint is a match
-						return endpoint;
-					}
-					else
-					{
-						// If there are elements left in the path, traverse
-						// the children for this endpoint
-						var childMatch = GetEndpointForPathParts(remainingPath, endpoint.Endpoints);
+			var matchingEndpoints = new List<Endpoint>();
 
-						if (childMatch is object)
+			if (endpoints is object)
+			{
+				foreach (var endpoint in endpoints)
+				{
+					if (endpoint.MatchesPath(pathParts, out var remainingPath))
+					{
+						if (remainingPath.Length == 0)
 						{
-							return childMatch;
+							// If there are no elements left in the path, then this
+							// endpoint is a match.
+							matchingEndpoints.Add(endpoint);
+						}
+						else
+						{
+							// If there are elements left in the path, traverse
+							// the children for this endpoint
+							var matchingChildren = GetEndpointsForPathParts(remainingPath, endpoint.Endpoints);
+							matchingEndpoints.AddRange(matchingChildren);
 						}
 					}
 				}
-				else
-				{
-					return null;
-				}
 			}
 
-			// If the whole tree has been traversed and there are no matches,
-			// the path doesn't exist.
-			return null;
+			return matchingEndpoints;
 		}
 
 		private Response NotFoundResponse()

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 namespace Mockasin.Mocks.Router
@@ -9,7 +8,7 @@ namespace Mockasin.Mocks.Router
 		{
 			if (path is null)
 			{
-				throw new ArgumentNullException(nameof(path), "Path can not be null");
+				return new string[] { "" };
 			}
 
 			var pathParts = path.Trim().Split('/');
@@ -33,7 +32,17 @@ namespace Mockasin.Mocks.Router
 				take = pathParts.Length - skip - skipEnd;
 			}
 
-			return pathParts.Skip(skip).Take(take).ToArray();
+			var split = pathParts.Skip(skip).Take(take).ToArray();
+
+			if (split.Length == 0)
+			{
+				// If it results in an empty array return an array with a single
+				// empty string
+				return new string[] { "" };
+			}
+
+			// Otherwise, return the actual value
+			return split;
 		}
 	}
 }

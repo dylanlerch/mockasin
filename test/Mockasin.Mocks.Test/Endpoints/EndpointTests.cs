@@ -8,10 +8,13 @@ namespace Mockasin.Mocks.Test.Endpoints
 		[Theory]
 		[InlineData(null, null)]
 		[InlineData(null, new string[0])]
+		[InlineData(null, new string[] { "" })]
 		[InlineData("", null)]
 		[InlineData("", new string[0])]
+		[InlineData("", new string[] { "" })]
 		[InlineData(" ", null)]
 		[InlineData(" ", new string[0])]
+		[InlineData(" ", new string[] { "" })]
 		public void MatchesPath_EndpointAndMatchPathEmpty_PathsMatchExactly(string endpointPath, string[] matchPath)
 		{
 			// Arrange
@@ -51,6 +54,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 		[InlineData("/leading/slashes/dont/matter", new string[] { "leading", "slashes", "dont", "matter" })]
 		[InlineData("trailing/slashes/dont/matter/", new string[] { "trailing", "slashes", "dont", "matter" })]
 		[InlineData("/leading/and/trailing/slashes/dont/matter/", new string[] { "leading", "and", "trailing", "slashes", "dont", "matter" })]
+		[InlineData("///", new string[] { "", "" })]
 		public void MatchesPath_PathsMathExactly_ReturnTrueAndEmptyRemainingElements(string endpointPath, string[] matchPath)
 		{
 			// Arrange
@@ -72,6 +76,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 		[InlineData("/test//path", new string[] { "test", "", "path", "foo" }, new string[] { "foo" })]
 		[InlineData("test/test/test/test", new string[] { "test", "test", "test", "test", "path" }, new string[] { "path" })]
 		[InlineData("/test/test/test/test/", new string[] { "test", "test", "test", "test", "path" }, new string[] { "path" })]
+		[InlineData("///", new string[] { "", "", "" }, new string[] { "" })]
 		public void MatchesPath_PathsMathExactly_ReturnTrueAndRemainingElements(string endpointPath, string[] matchPath, string[] expectedRemaining)
 		{
 			// Arrange
