@@ -54,6 +54,10 @@ namespace Mockasin.Mocks.Test.Endpoints
 		[InlineData("/leading/slashes/dont/matter", new string[] { "leading", "slashes", "dont", "matter" })]
 		[InlineData("trailing/slashes/dont/matter/", new string[] { "trailing", "slashes", "dont", "matter" })]
 		[InlineData("/leading/and/trailing/slashes/dont/matter/", new string[] { "leading", "and", "trailing", "slashes", "dont", "matter" })]
+		[InlineData("/     spaces    /    before     /    and    /     after    /   each   /   part   /   dont   /    matter    ", new string[] { "spaces", "before", "and", "after", "each", "part", "dont", "matter" })]
+		[InlineData("/spaces/before/and/after/each/part/dont/matter", new string[] { "     spaces   ", "    before   ", "   and   ", "   after   ", "  each  ", "  part  ", "   dont   ", "   matter   " })]
+		[InlineData("         /spaces/at/the/start/and/end/dont/matter         ", new string[] { "spaces", "at", "the", "start", "and", "end", "dont", "matter" })]
+		[InlineData("/spaces/at/the/start/and/end/dont/matter", new string[] { "       spaces", "at", "the", "start", "and", "end", "dont", "matter      " })]
 		[InlineData("///", new string[] { "", "" })]
 		public void MatchesPath_PathsMathExactly_ReturnTrueAndEmptyRemainingElements(string endpointPath, string[] matchPath)
 		{

@@ -60,7 +60,7 @@ namespace Mockasin.Mocks.Endpoints
 				var matchPathElement = pathToMatch[i];
 				var endpointPathElement = Details.SplitPath[i];
 
-				if (matchPathElement.ToLowerInvariant() != endpointPathElement.ToLowerInvariant())
+				if (matchPathElement.Trim().ToLowerInvariant() != endpointPathElement.Trim().ToLowerInvariant())
 				{
 					remainingPath = null;
 					return false;
