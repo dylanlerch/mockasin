@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Mockasin.Mocks.Configuration;
 using Mockasin.Mocks.Endpoints;
@@ -37,8 +38,71 @@ namespace Mockasin.Mocks.Router
 				};
 			}
 
-			// Otherwise, we know we have a valid endpoint structure.
+			// Otherwise, we know we have a valid endpoint structure. Get the
+			// matching endpoint if there is one.
+			var endpoint = GetEndpointForRoute(route, _responses);
+
+			if (endpoint is null)
+			{
+				return NotFoundResponse();
+			}
+
 			return new Response();
+		}
+
+
+		public static Endpoint GetEndpointForRoute(string route, EndpointsRoot root)
+		{
+			if (route is null)
+			{
+				return null;
+			}
+			
+			var routeParts = route.SplitRoute();
+			return GetEndpointForRouteParts(routeParts, root.Endpoints);
+		}
+
+		private static Endpoint GetEndpointForRouteParts(string[] routeParts, List<Endpoint> endpoints)
+		{
+			foreach (var endpoint in endpoints)
+			{
+				if (endpoint.MatchesPath(routeParts, out var remainingPath))
+				{
+					if (remainingPath.Length == 0)
+					{
+						// If there are no elements left in the path, then this
+						// endpoint is a match
+						return endpoint;
+					}
+					else
+					{
+						// If there are elements left in the path, traverse
+						// the children for this endpoint
+						var childMatch = GetEndpointForRouteParts(remainingPath, endpoint.Endpoints);
+
+						if (childMatch is object)
+						{
+							return childMatch;
+						}
+					}
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			// If the whole tree has been traversed and there are no matches,
+			// the path doesn't exist.
+			return null;
+		}
+
+		private Response NotFoundResponse()
+		{
+			return new Response
+			{
+				StatusCode = 404
+			};
 		}
 	}
 }

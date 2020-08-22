@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
-using Mockasin.Mocks.Endpoints.Status;
 using Mockasin.Mocks.Validation;
 using Mockasin.Mocks.Validation.Abstractions;
 
@@ -20,13 +19,13 @@ namespace Mockasin.Mocks.Endpoints
 		[JsonIgnore]
 		public EndpointsRootStatus Status { get; set; } = new EndpointsRootStatus();
 
-		public EndpointsRoot() {}
-		
+		public EndpointsRoot() { }
+
 		public EndpointsRoot(string errorMessage)
 		{
 			Status.ErrorMessage = errorMessage;
 		}
-		
+
 		public static EndpointsRoot LoadFromFile(string fileName, IMockSectionValidator<EndpointsRoot> validator, ILogger logger = null)
 		{
 			EndpointsRoot root;

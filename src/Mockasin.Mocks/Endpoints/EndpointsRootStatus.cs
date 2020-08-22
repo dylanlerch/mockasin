@@ -1,4 +1,4 @@
-namespace Mockasin.Mocks.Endpoints.Status
+namespace Mockasin.Mocks.Endpoints
 {
 	public class EndpointsRootStatus
 	{
