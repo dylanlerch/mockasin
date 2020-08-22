@@ -31,7 +31,7 @@ namespace Mockasin.Mocks.Endpoints
 				}
 				else
 				{
-					Details.SplitPath = Path.SplitRoute();
+					Details.SplitPath = Path.SplitPath();
 				}
 			}
 

@@ -20,7 +20,7 @@ namespace Mockasin.Mocks.Router
 			_logger = logger;
 		}
 
-		public Response Route(string method, string route)
+		public Response Route(string method, string path)
 		{
 			// Always reload data on each request while were building and testing things
 			_responses = EndpointsRoot.LoadFromFile(_settings.Mock.ConfigurationPath, _validator, _logger);
@@ -40,7 +40,7 @@ namespace Mockasin.Mocks.Router
 
 			// Otherwise, we know we have a valid endpoint structure. Get the
 			// matching endpoint if there is one.
-			var endpoint = GetEndpointForRoute(route, _responses);
+			var endpoint = GetEndpointForPath(path, _responses);
 
 			if (endpoint is null)
 			{
@@ -51,22 +51,22 @@ namespace Mockasin.Mocks.Router
 		}
 
 
-		public static Endpoint GetEndpointForRoute(string route, EndpointsRoot root)
+		public static Endpoint GetEndpointForPath(string path, EndpointsRoot root)
 		{
-			if (route is null)
+			if (path is null)
 			{
 				return null;
 			}
-			
-			var routeParts = route.SplitRoute();
-			return GetEndpointForRouteParts(routeParts, root.Endpoints);
+
+			var pathParts = path.SplitPath();
+			return GetEndpointForPathParts(pathParts, root.Endpoints);
 		}
 
-		private static Endpoint GetEndpointForRouteParts(string[] routeParts, List<Endpoint> endpoints)
+		private static Endpoint GetEndpointForPathParts(string[] pathParts, List<Endpoint> endpoints)
 		{
 			foreach (var endpoint in endpoints)
 			{
-				if (endpoint.MatchesPath(routeParts, out var remainingPath))
+				if (endpoint.MatchesPath(pathParts, out var remainingPath))
 				{
 					if (remainingPath.Length == 0)
 					{
@@ -78,7 +78,7 @@ namespace Mockasin.Mocks.Router
 					{
 						// If there are elements left in the path, traverse
 						// the children for this endpoint
-						var childMatch = GetEndpointForRouteParts(remainingPath, endpoint.Endpoints);
+						var childMatch = GetEndpointForPathParts(remainingPath, endpoint.Endpoints);
 
 						if (childMatch is object)
 						{

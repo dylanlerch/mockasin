@@ -7,16 +7,16 @@ namespace Mockasin.Mocks.Test.Routing
 	public class RoutingExtensionsTests
 	{
 		[Fact]
-		public void SplitRoute_NullRoute_ThrowsArgumentException()
+		public void SplitPath_NullPath_ThrowsArgumentException()
 		{
 			// Arrange
 			string value = null;
 
 			// Act
-			var exception = Assert.Throws<ArgumentNullException>(() => value.SplitRoute());
+			var exception = Assert.Throws<ArgumentNullException>(() => value.SplitPath());
 
 			// Assert
-			Assert.Equal("Route can not be null (Parameter 'route')", exception.Message);
+			Assert.Equal("Path can not be null (Parameter 'path')", exception.Message);
 		}
 
 		[Theory]
@@ -29,13 +29,13 @@ namespace Mockasin.Mocks.Test.Routing
 		[InlineData("test/", new string[] { "test" })]
 		[InlineData("/test/", new string[] { "test" })]
 		[InlineData("lots/of/parts/to/test/", new string[] { "lots", "of", "parts", "to", "test" })]
-		public void SplitRoute_ValidRoute_SplitsRoute(string route, string[] expectedSplitRoute)
+		public void SplitPath_ValidPath_SplitsPath(string path, string[] expectedSplitPath)
 		{
 			// Act
-			var splitRoute = route.SplitRoute();
+			var splitPath = path.SplitPath();
 
 			// Assert
-			Assert.Equal(expectedSplitRoute, splitRoute);
+			Assert.Equal(expectedSplitPath, splitPath);
 		}
 	}
 }
