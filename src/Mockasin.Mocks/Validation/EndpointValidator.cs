@@ -7,9 +7,9 @@ namespace Mockasin.Mocks.Validation
 	public class EndpointValidator : IMockSectionValidator<IEndpoint>
 	{
 		private static readonly Regex PathPattern = new Regex("^[A-Za-z0-9/]+$", RegexOptions.Compiled);
-		private readonly IMockSectionValidator<EndpointAction> _actionValidator;
+		private readonly IMockSectionValidator<IEndpointAction> _actionValidator;
 
-		public EndpointValidator(IMockSectionValidator<EndpointAction> actionValidator)
+		public EndpointValidator(IMockSectionValidator<IEndpointAction> actionValidator)
 		{
 			_actionValidator = actionValidator;
 		}

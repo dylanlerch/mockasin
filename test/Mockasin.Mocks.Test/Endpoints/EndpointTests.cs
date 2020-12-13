@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Mockasin.Mocks.Endpoints;
+using Moq;
 using Xunit;
 
 namespace Mockasin.Mocks.Test.Endpoints
@@ -65,7 +67,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 		[InlineData("         /spaces/at/the/start/and/end/dont/matter         ", new string[] { "spaces", "at", "the", "start", "and", "end", "dont", "matter" })]
 		[InlineData("/spaces/at/the/start/and/end/dont/matter", new string[] { "       spaces", "at", "the", "start", "and", "end", "dont", "matter      " })]
 		[InlineData("///", new string[] { "", "" })]
-		public void MatchesPath_PathsMathExactly_ReturnTrueAndEmptyRemainingElements(string endpointPath, string[] matchPath)
+		public void MatchesPath_PathsMatchExactly_ReturnTrueAndEmptyRemainingElements(string endpointPath, string[] matchPath)
 		{
 			// Arrange
 			var endpoint = new Endpoint { Path = endpointPath };
@@ -87,7 +89,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 		[InlineData("test/test/test/test", new string[] { "test", "test", "test", "test", "path" }, new string[] { "path" })]
 		[InlineData("/test/test/test/test/", new string[] { "test", "test", "test", "test", "path" }, new string[] { "path" })]
 		[InlineData("///", new string[] { "", "", "" }, new string[] { "" })]
-		public void MatchesPath_PathsMathExactly_ReturnTrueAndRemainingElements(string endpointPath, string[] matchPath, string[] expectedRemaining)
+		public void MatchesPath_PathsMatchPrefix_ReturnTrueAndRemainingElements(string endpointPath, string[] matchPath, string[] expectedRemaining)
 		{
 			// Arrange
 			var endpoint = new Endpoint { Path = endpointPath };
@@ -98,6 +100,94 @@ namespace Mockasin.Mocks.Test.Endpoints
 			// Assert
 			Assert.True(match);
 			Assert.Equal(expectedRemaining, remaining);
+		}
+
+		[Fact]
+		public void GetActionWithMatchingMethod_NullActions_ReturnsNull()
+		{
+			// Arrange
+			var endpoint = new Endpoint();
+
+			// Act
+			var action = endpoint.GetActionWithMatchingMethod("anyMethod");
+
+			// Assert
+			Assert.Null(action);
+		}
+
+		[Fact]
+		public void GetActionWithMatchingMethod_NoActions_ReturnsNull()
+		{
+			// Arrange
+			var endpoint = new Endpoint { Actions = new List<IEndpointAction>() };
+
+			// Act
+			var action = endpoint.GetActionWithMatchingMethod("anyMethod");
+
+			// Assert
+			Assert.Null(action);
+		}
+
+		[Fact]
+		public void GetActionWithMatchingMethod_SingleActionMatches_ReturnsSingleAction()
+		{
+			// Arrange
+			var action = new Mock<IEndpointAction>();
+			action.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(true);
+			var endpoint = new Endpoint
+			{
+				Actions = new List<IEndpointAction> { action.Object }
+			};
+
+			// Act
+			var match = endpoint.GetActionWithMatchingMethod("method");
+
+			// Assert
+			Assert.Same(action.Object, match);
+		}
+
+		[Fact]
+		public void GetActionWithMatchingMethod_MultipleActionMatches_ReturnsFirstAction()
+		{
+			// Arrange
+			var action1 = new Mock<IEndpointAction>();
+			action1.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(true);
+
+			var action2 = new Mock<IEndpointAction>();
+			action2.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(true);
+
+			var endpoint = new Endpoint
+			{
+				Actions = new List<IEndpointAction> { action1.Object, action2.Object }
+			};
+
+			// Act
+			var match = endpoint.GetActionWithMatchingMethod("method");
+
+			// Assert
+			Assert.Same(action1.Object, match);
+		}
+
+		[Fact]
+		public void GetActionWithMatchingMethod_MultipleActionsNoneMatch_ReturnNull()
+		{
+			// Arrange
+			var action1 = new Mock<IEndpointAction>();
+			action1.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(false);
+
+			var action2 = new Mock<IEndpointAction>();
+			action2.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(false);
+
+			var endpoint = new Endpoint
+			{
+				Actions = new List<IEndpointAction> { action1.Object, action2.Object }
+			};
+
+			// Act
+			var match = endpoint.GetActionWithMatchingMethod("method");
+
+			// Assert
+			Assert.Null(match);
 		}
 	}
 }

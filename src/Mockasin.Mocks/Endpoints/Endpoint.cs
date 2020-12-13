@@ -8,7 +8,7 @@ namespace Mockasin.Mocks.Endpoints
 	public interface IEndpoint
 	{
 		string Path { get; set; }
-		List<EndpointAction> Actions { get; set; }
+		List<IEndpointAction> Actions { get; set; }
 		List<IEndpoint> Endpoints { get; set; }
 		bool MatchesPath(string[] pathToMatch, out string[] remainingPath);
 		IEndpointAction GetActionWithMatchingMethod(string method);
@@ -20,7 +20,7 @@ namespace Mockasin.Mocks.Endpoints
 		public string Path { get; set; }
 
 		[JsonPropertyName("actions")]
-		public List<EndpointAction> Actions { get; set; }
+		public List<IEndpointAction> Actions { get; set; }
 
 		[JsonPropertyName("endpoints")]
 		public List<IEndpoint> Endpoints { get; set; } = new List<IEndpoint>();
@@ -77,15 +77,20 @@ namespace Mockasin.Mocks.Endpoints
 			}
 
 			// If reaching this point, the path for this endpoint is a prefix of
-			// the path that is being matched. Return true rlkturn a new array
-			// with those matched elements removed.
+			// the path that is being matched. Return true and return a new
+			// array with those matched elements removed.
 			remainingPath = pathToMatch.Skip(Details.SplitPath.Length).ToArray();
 			return true;
 		}
 
 		public IEndpointAction GetActionWithMatchingMethod(string method)
 		{
-			foreach (var action in this.Actions)
+			if (Actions is null)
+			{
+				return null;
+			}
+
+			foreach (var action in Actions)
 			{
 				if (action.MatchesMethod(method))
 				{
