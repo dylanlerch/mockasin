@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Mockasin.Mocks.Endpoints;
 using Mockasin.Mocks.Test.TestData;
 using Mockasin.Mocks.Validation;
@@ -39,6 +40,175 @@ namespace Mockasin.Mocks.Test.Endpoints
 			Assert.True(root.Status.IsInvalid);
 			Assert.Equal("Error message", root.Status.ErrorMessage);
 		}
+
+		[Fact]
+		public void GetResponse_NullEndpoints_ReturnsNull()
+		{
+			// Arrange
+			var root = new EndpointsRoot
+			{
+				Endpoints = null
+			};
+
+			// Act
+			var response = root.GetResponse("GET", "/a/b/c");
+
+			// Assert
+			Assert.Null(response);
+		}
+
+		[Fact]
+		public void GetResponse_EmptyEndpoints_ReturnsNull()
+		{
+			// Arrange
+			var root = new EndpointsRoot
+			{
+				Endpoints = new List<IEndpoint>()
+			};
+
+			// Act
+			var response = root.GetResponse("GET", "/a/b/c");
+
+			// Assert
+			Assert.Null(response);
+		}
+
+		[Theory]
+		[InlineData(null, "a/b/c")]
+		[InlineData("GET", null)]
+		[InlineData(null, null)]
+		public void GetResponse_NullMethodAndPath_ReturnsNull(string method, string path)
+		{
+			// Arrange
+			var root = new EndpointsRoot();
+
+			// Act
+			var response = root.GetResponse(method, path);
+
+			// Assert
+			Assert.Null(response);
+		}
+
+
+		delegate void MockMatchesPath(string[] path, out string[] remaining);
+
+		[Fact]
+		public void GetResponse_FirstMatchesPath_ReturnsFirst()
+		{
+			// Arrange
+			var response = new Response();
+
+			var action = new Mock<IEndpointAction>();
+			action.Setup(m => m.GetResponse())
+				.Returns(response);
+
+			var endpoint = new Mock<IEndpoint>();
+			endpoint.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
+				.Callback(new MockMatchesPath((string[] path, out string[] remaining) => { remaining = new string[0]; }))
+				.Returns(true);
+			endpoint.Setup(m => m.GetActionWithMatchingMethod(It.IsAny<string>()))
+				.Returns(action.Object);
+
+			var endpoints = new List<IEndpoint> { endpoint.Object };
+
+			var root = new EndpointsRoot { Endpoints = endpoints };
+
+			// Act
+			var actualResponse = root.GetResponse("GET", "some/path");
+
+			// Assert
+			Assert.Same(response, actualResponse);
+		}
+
+		[Fact]
+		public void GetResponse_SecondMatchesPath_ReturnsSecond()
+		{
+			// Arrange
+			var response1 = new Response();
+
+			var action1 = new Mock<IEndpointAction>();
+			action1.Setup(m => m.GetResponse())
+				.Returns(response1);
+
+			var endpoint1 = new Mock<IEndpoint>();
+			endpoint1.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
+				.Returns(false);
+
+
+			var response2 = new Response();
+
+			var action2 = new Mock<IEndpointAction>();
+			action2.Setup(m => m.GetResponse())
+				.Returns(response2);
+
+			var endpoint2 = new Mock<IEndpoint>();
+			endpoint2.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
+				.Callback(new MockMatchesPath((string[] path, out string[] remaining) => { remaining = new string[0]; }))
+				.Returns(true);
+			endpoint2.Setup(m => m.GetActionWithMatchingMethod(It.IsAny<string>()))
+				.Returns(action2.Object);
+
+			var endpoints = new List<IEndpoint>
+			{
+				endpoint1.Object,
+				endpoint2.Object
+			};
+
+			var root = new EndpointsRoot { Endpoints = endpoints };
+
+			// Act
+			var actualResponse = root.GetResponse("GET", "some/path");
+
+			// Assert
+			Assert.Same(response2, actualResponse);
+		}
+
+		[Fact]
+		public void GetResponse_BothMatchPathButFirstDoesntMatchMethod_ReturnsSecond()
+		{
+			// Arrange
+			var response1 = new Response();
+
+			var action1 = new Mock<IEndpointAction>();
+			action1.Setup(m => m.GetResponse())
+				.Returns(response1);
+
+			var endpoint1 = new Mock<IEndpoint>();
+			endpoint1.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
+				.Callback(new MockMatchesPath((string[] path, out string[] remaining) => { remaining = new string[0]; }))
+				.Returns(true);
+			endpoint1.Setup(m => m.GetActionWithMatchingMethod(It.IsAny<string>()))
+				.Returns<IEndpointAction>(null);
+
+
+			var response2 = new Response();
+
+			var action2 = new Mock<IEndpointAction>();
+			action2.Setup(m => m.GetResponse())
+				.Returns(response2);
+
+			var endpoint2 = new Mock<IEndpoint>();
+			endpoint2.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
+				.Callback(new MockMatchesPath((string[] path, out string[] remaining) => { remaining = new string[0]; }))
+				.Returns(true);
+			endpoint2.Setup(m => m.GetActionWithMatchingMethod(It.IsAny<string>()))
+				.Returns(action2.Object);
+
+			var endpoints = new List<IEndpoint>
+			{
+				endpoint1.Object,
+				endpoint2.Object
+			};
+
+			var root = new EndpointsRoot { Endpoints = endpoints };
+
+			// Act
+			var actualResponse = root.GetResponse("GET", "some/path");
+
+			// Assert
+			Assert.Same(response2, actualResponse);
+		}
+
 
 		[Fact]
 		public void LoadFromFile_FileDoesNotExist_CreatesInvalidEmptyEndpointRoot()

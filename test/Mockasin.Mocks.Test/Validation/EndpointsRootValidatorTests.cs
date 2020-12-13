@@ -10,7 +10,7 @@ namespace Mockasin.Mocks.Test.Validation
 {
 	public class EndpointsRootValidatorTests
 	{
-		private readonly Mock<IMockSectionValidator<Endpoint>> _endpointValidator = new Mock<IMockSectionValidator<Endpoint>>();
+		private readonly Mock<IMockSectionValidator<IEndpoint>> _endpointValidator = new Mock<IMockSectionValidator<IEndpoint>>();
 		private readonly SectionName _name = new SectionName("$");
 
 		[Fact]
@@ -54,7 +54,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var validator = new EndpointsRootValidator(_endpointValidator.Object);
 			var section = new EndpointsRoot
 			{
-				Endpoints = new List<Endpoint>()
+				Endpoints = new List<IEndpoint>()
 			};
 
 			// Act
@@ -76,7 +76,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var endpoint = new Endpoint();
 			var section = new EndpointsRoot
 			{
-				Endpoints = new List<Endpoint>
+				Endpoints = new List<IEndpoint>
 				{
 					endpoint
 				}
@@ -103,7 +103,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var endpoint3 = new Endpoint();
 			var section = new EndpointsRoot
 			{
-				Endpoints = new List<Endpoint>
+				Endpoints = new List<IEndpoint>
 				{
 					endpoint1,
 					endpoint2,

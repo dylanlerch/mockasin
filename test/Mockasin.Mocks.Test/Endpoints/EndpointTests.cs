@@ -15,6 +15,12 @@ namespace Mockasin.Mocks.Test.Endpoints
 		[InlineData(" ", null)]
 		[InlineData(" ", new string[0])]
 		[InlineData(" ", new string[] { "" })]
+		[InlineData("//", null)]
+		[InlineData("//", new string[0])]
+		[InlineData("//", new string[] { "" })]
+		[InlineData("  /  ", null)]
+		[InlineData("  /  ", new string[0])]
+		[InlineData("  /  ", new string[] { "" })]
 		public void MatchesPath_EndpointAndMatchPathEmpty_PathsMatchExactly(string endpointPath, string[] matchPath)
 		{
 			// Arrange

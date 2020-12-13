@@ -5,7 +5,16 @@ using Mockasin.Mocks.Router;
 
 namespace Mockasin.Mocks.Endpoints
 {
-	public class Endpoint
+	public interface IEndpoint
+	{
+		string Path { get; set; }
+		List<EndpointAction> Actions { get; set; }
+		List<IEndpoint> Endpoints { get; set; }
+		bool MatchesPath(string[] pathToMatch, out string[] remainingPath);
+		IEndpointAction GetActionWithMatchingMethod(string method);
+	}
+
+	public class Endpoint : IEndpoint
 	{
 		[JsonPropertyName("path")]
 		public string Path { get; set; }
@@ -14,7 +23,7 @@ namespace Mockasin.Mocks.Endpoints
 		public List<EndpointAction> Actions { get; set; }
 
 		[JsonPropertyName("endpoints")]
-		public List<Endpoint> Endpoints { get; set; } = new List<Endpoint>();
+		public List<IEndpoint> Endpoints { get; set; } = new List<IEndpoint>();
 
 		private EndpointDetails Details { get; set; } = new EndpointDetails();
 
@@ -72,6 +81,19 @@ namespace Mockasin.Mocks.Endpoints
 			// with those matched elements removed.
 			remainingPath = pathToMatch.Skip(Details.SplitPath.Length).ToArray();
 			return true;
+		}
+
+		public IEndpointAction GetActionWithMatchingMethod(string method)
+		{
+			foreach (var action in this.Actions)
+			{
+				if (action.MatchesMethod(method))
+				{
+					return action;
+				}
+			}
+
+			return null;
 		}
 	}
 }

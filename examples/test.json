@@ -6,8 +6,7 @@
 			"actions": [
 				{
 					"method": "GET",
-					"mode": "SINGLE",
-					"singleResponseIndex": 0,
+					"mode": "RANDOM",
 					"responses": [
 						{
 							"statusCode": 200,
@@ -16,7 +15,13 @@
 								"another": "string"
 							},
 							"jsonBody": {
-								"Hello": "World"
+								"Hello": "Wold"
+							}
+						},
+						{
+							"statusCode": 201,
+							"jsonBody": {
+								"Hello": "Wold"
 							}
 						}
 					]

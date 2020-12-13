@@ -23,5 +23,10 @@ namespace Mockasin.Mocks.Endpoints
 
 		[JsonPropertyName("stringBody")]
 		public string StringBody { get; set; }
+
+		public Response Execute()
+		{
+			return null;
+		}
 	}
 }

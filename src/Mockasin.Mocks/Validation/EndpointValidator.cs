@@ -4,7 +4,7 @@ using Mockasin.Mocks.Validation.Abstractions;
 
 namespace Mockasin.Mocks.Validation
 {
-	public class EndpointValidator : IMockSectionValidator<Endpoint>
+	public class EndpointValidator : IMockSectionValidator<IEndpoint>
 	{
 		private static readonly Regex PathPattern = new Regex("^[A-Za-z0-9/]+$", RegexOptions.Compiled);
 		private readonly IMockSectionValidator<EndpointAction> _actionValidator;
@@ -14,7 +14,7 @@ namespace Mockasin.Mocks.Validation
 			_actionValidator = actionValidator;
 		}
 
-		public ValidationResult Validate(Endpoint section, SectionName sectionName)
+		public ValidationResult Validate(IEndpoint section, SectionName sectionName)
 		{
 			var result = new ValidationResult();
 

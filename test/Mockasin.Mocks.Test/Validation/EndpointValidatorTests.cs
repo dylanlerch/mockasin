@@ -215,7 +215,7 @@ namespace Mockasin.Mocks.Test.Validation
 			{
 				Path = _defaultValidPath,
 				Actions = _defaultValidActionList,
-				Endpoints = new List<Endpoint>()
+				Endpoints = new List<IEndpoint>()
 			};
 
 			// Act
@@ -239,7 +239,7 @@ namespace Mockasin.Mocks.Test.Validation
 			{
 				Path = _defaultValidPath,
 				Actions = _defaultValidActionList,
-				Endpoints = new List<Endpoint>
+				Endpoints = new List<IEndpoint>
 				{
 					new Endpoint
 					{

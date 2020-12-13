@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
+using Mockasin.Mocks.Router;
 using Mockasin.Mocks.Validation;
 using Mockasin.Mocks.Validation.Abstractions;
 
@@ -14,7 +15,7 @@ namespace Mockasin.Mocks.Endpoints
 	public class EndpointsRoot
 	{
 		[JsonPropertyName("endpoints")]
-		public List<Endpoint> Endpoints { get; set; }
+		public List<IEndpoint> Endpoints { get; set; }
 
 		[JsonIgnore]
 		public EndpointsRootStatus Status { get; set; } = new EndpointsRootStatus();
@@ -24,6 +25,55 @@ namespace Mockasin.Mocks.Endpoints
 		public EndpointsRoot(string errorMessage)
 		{
 			Status.ErrorMessage = errorMessage;
+		}
+
+		public Response GetResponse(string method, string path)
+		{
+			var pathParts = path.SplitPath();
+			return GetResponseForPathParts(method, pathParts, Endpoints);
+		}
+
+		private Response GetResponseForPathParts(string method, string[] pathParts, List<IEndpoint> endpoints)
+		{
+			if (endpoints is object)
+			{
+				foreach (var endpoint in endpoints)
+				{
+					if (endpoint.MatchesPath(pathParts, out var remainingPath))
+					{
+						if (remainingPath.Length == 0)
+						{
+							// If there are no elements left in the path, then this
+							// endpoint matches the path. Now, see if there is an
+							// action with a method that matches the given method
+							var action = endpoint.GetActionWithMatchingMethod(method);
+							if (action is object)
+							{
+								// Actions have multiple responses, and the action
+								// determines which of these to return. GetResponse
+								// gets the specific response to return.
+
+								// Exit at the first matching action that is found.
+								return action.GetResponse();
+							}
+						}
+						else
+						{
+							// If there are elements left in the path, traverse
+							// the children for this endpoint
+							var response = GetResponseForPathParts(method, remainingPath, endpoint.Endpoints);
+							if (response is object)
+							{
+								return response;
+							}
+						}
+					}
+				}
+			}
+
+			// If there is no response found in the loop above, there is no
+			// match in this part of the response tree. Return null.
+			return null;
 		}
 
 		public static EndpointsRoot LoadFromFile(string fileName, IMockSectionValidator<EndpointsRoot> validator, ILogger logger = null)
