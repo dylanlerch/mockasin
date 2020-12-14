@@ -7,6 +7,7 @@ using Mockasin.Mocks.Endpoints;
 using Mockasin.Mocks.Router;
 using Mockasin.Mocks.Validation;
 using Mockasin.Mocks.Validation.Abstractions;
+using Mockasin.Services;
 using Mockasin.Web.Configuration;
 
 namespace Mockasin.Web
@@ -31,6 +32,8 @@ namespace Mockasin.Web
 			services.AddSingleton<IMockSettings>(c => c.GetService<Settings>());
 			
 			services.AddSingleton<IMockRouter, MockRouter>();
+
+			services.AddSingleton<IRandomService, RandomService>();
 
 			services.AddSingleton<IMockSectionValidator<Response>, ResponseValidator>();
 			services.AddSingleton<IMockSectionValidator<IEndpointAction>, EndpointActionValidator>();

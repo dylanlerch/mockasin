@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Mockasin.Mocks.Router;
 using Mockasin.Mocks.Validation;
 using Mockasin.Mocks.Validation.Abstractions;
+using Mockasin.Services;
 
 namespace Mockasin.Mocks.Endpoints
 {
@@ -27,13 +28,13 @@ namespace Mockasin.Mocks.Endpoints
 			Status.ErrorMessage = errorMessage;
 		}
 
-		public Response GetResponse(string method, string path)
+		public Response GetResponse(string method, string path, IRandomService random)
 		{
 			var pathParts = path.SplitPath();
-			return GetResponseForPathParts(method, pathParts, Endpoints);
+			return GetResponseForPathParts(method, pathParts, Endpoints, random);
 		}
 
-		private Response GetResponseForPathParts(string method, string[] pathParts, List<IEndpoint> endpoints)
+		private Response GetResponseForPathParts(string method, string[] pathParts, List<IEndpoint> endpoints, IRandomService random)
 		{
 			if (endpoints is object)
 			{
@@ -54,14 +55,14 @@ namespace Mockasin.Mocks.Endpoints
 								// gets the specific response to return.
 
 								// Exit at the first matching action that is found.
-								return action.GetResponse();
+								return action.GetResponse(random);
 							}
 						}
 						else
 						{
 							// If there are elements left in the path, traverse
 							// the children for this endpoint
-							var response = GetResponseForPathParts(method, remainingPath, endpoint.Endpoints);
+							var response = GetResponseForPathParts(method, remainingPath, endpoint.Endpoints, random);
 							if (response is object)
 							{
 								return response;

@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Mockasin.Mocks.Test")]
 namespace Mockasin.Mocks.Endpoints
 {
 	public static class EndpointActionMode

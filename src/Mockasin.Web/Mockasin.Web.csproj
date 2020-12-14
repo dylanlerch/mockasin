@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mockasin.Mocks\Mockasin.Mocks.csproj" />
+    <ProjectReference Include="..\Mockasin.Services\Mockasin.Services.csproj" />
   </ItemGroup>
 
 

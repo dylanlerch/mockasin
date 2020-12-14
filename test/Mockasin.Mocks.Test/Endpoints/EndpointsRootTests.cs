@@ -3,6 +3,7 @@ using Mockasin.Mocks.Endpoints;
 using Mockasin.Mocks.Test.TestData;
 using Mockasin.Mocks.Validation;
 using Mockasin.Mocks.Validation.Abstractions;
+using Mockasin.Services;
 using Moq;
 using Xunit;
 
@@ -45,13 +46,14 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetResponse_NullEndpoints_ReturnsNull()
 		{
 			// Arrange
+			var random = new Mock<IRandomService>();
 			var root = new EndpointsRoot
 			{
 				Endpoints = null
 			};
 
 			// Act
-			var response = root.GetResponse("GET", "/a/b/c");
+			var response = root.GetResponse("GET", "/a/b/c", random.Object);
 
 			// Assert
 			Assert.Null(response);
@@ -61,13 +63,14 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetResponse_EmptyEndpoints_ReturnsNull()
 		{
 			// Arrange
+			var random = new Mock<IRandomService>();
 			var root = new EndpointsRoot
 			{
 				Endpoints = new List<IEndpoint>()
 			};
 
 			// Act
-			var response = root.GetResponse("GET", "/a/b/c");
+			var response = root.GetResponse("GET", "/a/b/c", random.Object);
 
 			// Assert
 			Assert.Null(response);
@@ -80,10 +83,11 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetResponse_NullMethodAndPath_ReturnsNull(string method, string path)
 		{
 			// Arrange
+			var random = new Mock<IRandomService>();
 			var root = new EndpointsRoot();
 
 			// Act
-			var response = root.GetResponse(method, path);
+			var response = root.GetResponse(method, path, random.Object);
 
 			// Assert
 			Assert.Null(response);
@@ -96,10 +100,12 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetResponse_FirstMatchesPath_ReturnsFirst()
 		{
 			// Arrange
+			var random = new Mock<IRandomService>();
+
 			var response = new Response();
 
 			var action = new Mock<IEndpointAction>();
-			action.Setup(m => m.GetResponse())
+			action.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response);
 
 			var endpoint = new Mock<IEndpoint>();
@@ -114,7 +120,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 			var root = new EndpointsRoot { Endpoints = endpoints };
 
 			// Act
-			var actualResponse = root.GetResponse("GET", "some/path");
+			var actualResponse = root.GetResponse("GET", "some/path", random.Object);
 
 			// Assert
 			Assert.Same(response, actualResponse);
@@ -124,10 +130,12 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetResponse_SecondMatchesPath_ReturnsSecond()
 		{
 			// Arrange
+			var random = new Mock<IRandomService>();
+
 			var response1 = new Response();
 
 			var action1 = new Mock<IEndpointAction>();
-			action1.Setup(m => m.GetResponse())
+			action1.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response1);
 
 			var endpoint1 = new Mock<IEndpoint>();
@@ -138,7 +146,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 			var response2 = new Response();
 
 			var action2 = new Mock<IEndpointAction>();
-			action2.Setup(m => m.GetResponse())
+			action2.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response2);
 
 			var endpoint2 = new Mock<IEndpoint>();
@@ -157,7 +165,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 			var root = new EndpointsRoot { Endpoints = endpoints };
 
 			// Act
-			var actualResponse = root.GetResponse("GET", "some/path");
+			var actualResponse = root.GetResponse("GET", "some/path", random.Object);
 
 			// Assert
 			Assert.Same(response2, actualResponse);
@@ -167,10 +175,12 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetResponse_BothMatchPathButFirstDoesntMatchMethod_ReturnsSecond()
 		{
 			// Arrange
+			var random = new Mock<IRandomService>();
+
 			var response1 = new Response();
 
 			var action1 = new Mock<IEndpointAction>();
-			action1.Setup(m => m.GetResponse())
+			action1.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response1);
 
 			var endpoint1 = new Mock<IEndpoint>();
@@ -184,7 +194,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 			var response2 = new Response();
 
 			var action2 = new Mock<IEndpointAction>();
-			action2.Setup(m => m.GetResponse())
+			action2.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response2);
 
 			var endpoint2 = new Mock<IEndpoint>();
@@ -203,7 +213,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 			var root = new EndpointsRoot { Endpoints = endpoints };
 
 			// Act
-			var actualResponse = root.GetResponse("GET", "some/path");
+			var actualResponse = root.GetResponse("GET", "some/path", random.Object);
 
 			// Assert
 			Assert.Same(response2, actualResponse);

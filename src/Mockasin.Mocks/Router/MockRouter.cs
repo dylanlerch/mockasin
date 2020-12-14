@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Mockasin.Mocks.Configuration;
 using Mockasin.Mocks.Endpoints;
 using Mockasin.Mocks.Validation.Abstractions;
+using Mockasin.Services;
 
 namespace Mockasin.Mocks.Router
 {
@@ -10,12 +11,14 @@ namespace Mockasin.Mocks.Router
 		private EndpointsRoot _responses;
 		private readonly IMockSettings _settings;
 		private readonly IMockSectionValidator<EndpointsRoot> _validator;
+		private readonly IRandomService _random;
 		private readonly ILogger<MockRouter> _logger;
 
-		public MockRouter(IMockSettings settings, IMockSectionValidator<EndpointsRoot> validator, ILogger<MockRouter> logger)
+		public MockRouter(IMockSettings settings, IMockSectionValidator<EndpointsRoot> validator, IRandomService random, ILogger<MockRouter> logger)
 		{
 			_settings = settings;
 			_validator = validator;
+			_random = random;
 			_logger = logger;
 		}
 
@@ -35,7 +38,7 @@ namespace Mockasin.Mocks.Router
 
 			// Otherwise, we know we have a valid endpoint structure. Get the
 			// matching endpoint if there is one.
-			var response = _responses.GetResponse(method, path);
+			var response = _responses.GetResponse(method, path, _random);
 			if (response is null)
 			{
 				return NotFoundResponse();

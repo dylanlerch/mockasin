@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Mockasin.Services;
 
 namespace Mockasin.Mocks.Endpoints
 {
@@ -12,7 +13,7 @@ namespace Mockasin.Mocks.Endpoints
 		List<Response> Responses { get; set; }
 
 		bool MatchesMethod(string method);
-		Response GetResponse();
+		Response GetResponse(IRandomService random);
 	}
 
 	public class EndpointAction : IEndpointAction
@@ -46,9 +47,9 @@ namespace Mockasin.Mocks.Endpoints
 			return actionMethodUpper == givenMethodUpper;
 		}
 
-		public Response GetResponse()
+		public Response GetResponse(IRandomService random)
 		{
-			if (Responses.Count == 0)
+			if (Responses is null || Responses.Count == 0)
 			{
 				return null;
 			}
@@ -61,7 +62,7 @@ namespace Mockasin.Mocks.Endpoints
 			}
 			else if (modeUpper == EndpointActionMode.Random)
 			{
-				return GetRandomResponse();
+				return GetRandomResponse(random);
 			}
 			else
 			{
@@ -77,7 +78,7 @@ namespace Mockasin.Mocks.Endpoints
 			throw new NotImplementedException("Intercept mode is not currently supported");
 		}
 
-		private Response GetRandomResponse()
+		private Response GetRandomResponse(IRandomService random)
 		{
 			// Each random response has a different weight that controls
 			// how likely it is to be returned.
@@ -87,35 +88,40 @@ namespace Mockasin.Mocks.Endpoints
 				totalWeight += response.RandomWeight;
 			}
 
-			int randomWeight;
-			lock (_random)
-			{
-				randomWeight = _random.Next(1, totalWeight + 1);
-			}
-
+			// Loop through each of the weights, adding them on to the cumulative
+			// weight value. If the cumulative weight for the specific response
+			// exceeds the generated value (which is between 1 and the sum of
+			// weights) we have the random response. Means what responses with
+			// higher relatives weights are proportionately more likely to be
+			// chosen
+			int randomResponseValue = random.GetRandomIntegerInclusive(1, totalWeight);
 			var cumulativeWeight = 0;
+
 			foreach (var response in Responses)
 			{
 				cumulativeWeight += response.RandomWeight;
-				if (cumulativeWeight >= randomWeight)
+				if (cumulativeWeight >= randomResponseValue)
 				{
 					return response;
 				}
 			}
 
-			// If loop through all of the responses and none are returned,
-			// then all the weights are zero. Just return the first one.
+			// If loop through all of the responses and none are returned, then
+			// all the weights are zero or the random number generate with a 
+			// value higher than the sum. Just return the first one.
 			return Responses[0];
 		}
 
 		private Response GetSingleResponse()
 		{
-			if (SingleResponseIndex < Responses.Count)
+			// If the index is valid for the length of the array
+			if (SingleResponseIndex < Responses.Count && SingleResponseIndex >= 0)
 			{
 				return Responses[SingleResponseIndex];
 			}
 			else
 			{
+				// If some wacky index is set, just return the first one.
 				return Responses[0];
 			}
 		}
