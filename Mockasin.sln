@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4F8E5B7B-B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mockasin.Mocks.Test", "test\Mockasin.Mocks.Test\Mockasin.Mocks.Test.csproj", "{0E407A6F-5225-4454-84AB-CD1E57F0722F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mockasin.Services", "src\Mockasin.Services\Mockasin.Services.csproj", "{27CAF7B8-22CB-445B-ACFE-EFD5934891AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +36,15 @@ Global
 		{0E407A6F-5225-4454-84AB-CD1E57F0722F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E407A6F-5225-4454-84AB-CD1E57F0722F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E407A6F-5225-4454-84AB-CD1E57F0722F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CAF7B8-22CB-445B-ACFE-EFD5934891AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CAF7B8-22CB-445B-ACFE-EFD5934891AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27CAF7B8-22CB-445B-ACFE-EFD5934891AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27CAF7B8-22CB-445B-ACFE-EFD5934891AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{39D0A992-F2BB-4FA0-8248-C41BC388283D} = {767F9CA0-CBB4-4964-A34A-C6AA88E2595E}
 		{3BCDD0FF-E675-47ED-AE85-F3140654A56A} = {767F9CA0-CBB4-4964-A34A-C6AA88E2595E}
 		{0E407A6F-5225-4454-84AB-CD1E57F0722F} = {4F8E5B7B-B7AE-44DA-A4F0-E6ADCFAE4C6E}
+		{27CAF7B8-22CB-445B-ACFE-EFD5934891AF} = {767F9CA0-CBB4-4964-A34A-C6AA88E2595E}
 	EndGlobalSection
 EndGlobal

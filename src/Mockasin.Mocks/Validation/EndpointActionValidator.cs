@@ -5,7 +5,7 @@ using Mockasin.Mocks.Validation.Abstractions;
 
 namespace Mockasin.Mocks.Validation
 {
-	public class EndpointActionValidator : IMockSectionValidator<IEndpointAction>
+	public class EndpointActionValidator : IMockSectionValidator<EndpointAction>
 	{
 		private static readonly string[] AllowedModes = new string[]
 		{
@@ -23,7 +23,7 @@ namespace Mockasin.Mocks.Validation
 			_responseValidator = responseValidator;
 		}
 
-		public ValidationResult Validate(IEndpointAction section, SectionName sectionName)
+		public ValidationResult Validate(EndpointAction section, SectionName sectionName)
 		{
 			var result = new ValidationResult();
 

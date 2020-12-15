@@ -5,18 +5,7 @@ using Mockasin.Services;
 
 namespace Mockasin.Mocks.Endpoints
 {
-	public interface IEndpointAction
-	{
-		string Method { get; set; }
-		string Mode { get; set; }
-		int SingleResponseIndex { get; set; }
-		List<Response> Responses { get; set; }
-
-		bool MatchesMethod(string method);
-		Response GetResponse(IRandomService random);
-	}
-
-	public class EndpointAction : IEndpointAction
+	public class EndpointAction
 	{
 		[JsonPropertyName("method")]
 		public string Method { get; set; } = EndpointActionMethod.Any;
@@ -30,7 +19,7 @@ namespace Mockasin.Mocks.Endpoints
 		[JsonPropertyName("responses")]
 		public List<Response> Responses { get; set; } = new List<Response>();
 
-		public bool MatchesMethod(string method)
+		public virtual bool MatchesMethod(string method)
 		{
 			var actionMethodUpper = Method.Trim().ToUpperInvariant();
 
@@ -45,7 +34,7 @@ namespace Mockasin.Mocks.Endpoints
 			return actionMethodUpper == givenMethodUpper;
 		}
 
-		public Response GetResponse(IRandomService random)
+		public virtual Response GetResponse(IRandomService random)
 		{
 			if (Responses is null || Responses.Count == 0)
 			{

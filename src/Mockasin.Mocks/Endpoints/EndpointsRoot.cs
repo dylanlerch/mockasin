@@ -5,17 +5,10 @@ using Mockasin.Services;
 
 namespace Mockasin.Mocks.Endpoints
 {
-	public interface IEndpointsRoot
-	{
-		List<IEndpoint> Endpoints { get; }
-		EndpointsRootStatus Status { get; }
-		Response GetResponse(string method, string path, IRandomService random);
-	}
-
-	public class EndpointsRoot : IEndpointsRoot
+	public class EndpointsRoot
 	{
 		[JsonPropertyName("endpoints")]
-		public List<IEndpoint> Endpoints { get; set; }
+		public List<Endpoint> Endpoints { get; set; }
 
 		[JsonIgnore]
 		public EndpointsRootStatus Status { get; set; } = new EndpointsRootStatus();
@@ -49,7 +42,7 @@ namespace Mockasin.Mocks.Endpoints
 			return response;
 		}
 
-		private Response GetResponseForPathParts(string method, string[] pathParts, List<IEndpoint> endpoints, IRandomService random)
+		private Response GetResponseForPathParts(string method, string[] pathParts, List<Endpoint> endpoints, IRandomService random)
 		{
 			if (endpoints is object)
 			{

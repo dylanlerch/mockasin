@@ -66,7 +66,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 			var random = new Mock<IRandomService>();
 			var root = new EndpointsRoot
 			{
-				Endpoints = new List<IEndpoint>()
+				Endpoints = new List<Endpoint>()
 			};
 
 			// Act
@@ -108,18 +108,18 @@ namespace Mockasin.Mocks.Test.Endpoints
 
 			var response = new Response();
 
-			var action = new Mock<IEndpointAction>();
+			var action = new Mock<EndpointAction>();
 			action.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response);
 
-			var endpoint = new Mock<IEndpoint>();
+			var endpoint = new Mock<Endpoint>();
 			endpoint.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
 				.Callback(new MockMatchesPath((string[] path, out string[] remaining) => { remaining = new string[0]; }))
 				.Returns(true);
 			endpoint.Setup(m => m.GetActionWithMatchingMethod(It.IsAny<string>()))
 				.Returns(action.Object);
 
-			var endpoints = new List<IEndpoint> { endpoint.Object };
+			var endpoints = new List<Endpoint> { endpoint.Object };
 
 			var root = new EndpointsRoot { Endpoints = endpoints };
 
@@ -138,29 +138,29 @@ namespace Mockasin.Mocks.Test.Endpoints
 
 			var response1 = new Response();
 
-			var action1 = new Mock<IEndpointAction>();
+			var action1 = new Mock<EndpointAction>();
 			action1.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response1);
 
-			var endpoint1 = new Mock<IEndpoint>();
+			var endpoint1 = new Mock<Endpoint>();
 			endpoint1.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
 				.Returns(false);
 
 
 			var response2 = new Response();
 
-			var action2 = new Mock<IEndpointAction>();
+			var action2 = new Mock<EndpointAction>();
 			action2.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response2);
 
-			var endpoint2 = new Mock<IEndpoint>();
+			var endpoint2 = new Mock<Endpoint>();
 			endpoint2.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
 				.Callback(new MockMatchesPath((string[] path, out string[] remaining) => { remaining = new string[0]; }))
 				.Returns(true);
 			endpoint2.Setup(m => m.GetActionWithMatchingMethod(It.IsAny<string>()))
 				.Returns(action2.Object);
 
-			var endpoints = new List<IEndpoint>
+			var endpoints = new List<Endpoint>
 			{
 				endpoint1.Object,
 				endpoint2.Object
@@ -183,32 +183,32 @@ namespace Mockasin.Mocks.Test.Endpoints
 
 			var response1 = new Response();
 
-			var action1 = new Mock<IEndpointAction>();
+			var action1 = new Mock<EndpointAction>();
 			action1.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response1);
 
-			var endpoint1 = new Mock<IEndpoint>();
+			var endpoint1 = new Mock<Endpoint>();
 			endpoint1.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
 				.Callback(new MockMatchesPath((string[] path, out string[] remaining) => { remaining = new string[0]; }))
 				.Returns(true);
 			endpoint1.Setup(m => m.GetActionWithMatchingMethod(It.IsAny<string>()))
-				.Returns<IEndpointAction>(null);
+				.Returns<EndpointAction>(null);
 
 
 			var response2 = new Response();
 
-			var action2 = new Mock<IEndpointAction>();
+			var action2 = new Mock<EndpointAction>();
 			action2.Setup(m => m.GetResponse(It.IsAny<IRandomService>()))
 				.Returns(response2);
 
-			var endpoint2 = new Mock<IEndpoint>();
+			var endpoint2 = new Mock<Endpoint>();
 			endpoint2.Setup(m => m.MatchesPath(It.IsAny<string[]>(), out It.Ref<string[]>.IsAny))
 				.Callback(new MockMatchesPath((string[] path, out string[] remaining) => { remaining = new string[0]; }))
 				.Returns(true);
 			endpoint2.Setup(m => m.GetActionWithMatchingMethod(It.IsAny<string>()))
 				.Returns(action2.Object);
 
-			var endpoints = new List<IEndpoint>
+			var endpoints = new List<Endpoint>
 			{
 				endpoint1.Object,
 				endpoint2.Object

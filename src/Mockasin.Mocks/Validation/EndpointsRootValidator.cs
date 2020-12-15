@@ -5,9 +5,9 @@ namespace Mockasin.Mocks.Validation
 {
 	public class EndpointsRootValidator : IMockSectionValidator<EndpointsRoot>
 	{
-		private readonly IMockSectionValidator<IEndpoint> _endpointValidator;
+		private readonly IMockSectionValidator<Endpoint> _endpointValidator;
 
-		public EndpointsRootValidator(IMockSectionValidator<IEndpoint> endpointValidator)
+		public EndpointsRootValidator(IMockSectionValidator<Endpoint> endpointValidator)
 		{
 			_endpointValidator = endpointValidator;
 		}

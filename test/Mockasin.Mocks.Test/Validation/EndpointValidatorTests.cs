@@ -9,11 +9,11 @@ namespace Mockasin.Mocks.Test.Validation
 {
 	public class EndpointValidatorTests
 	{
-		private readonly Mock<IMockSectionValidator<IEndpointAction>> _actionValidator = new Mock<IMockSectionValidator<IEndpointAction>>();
+		private readonly Mock<IMockSectionValidator<EndpointAction>> _actionValidator = new Mock<IMockSectionValidator<EndpointAction>>();
 		private readonly SectionName _name = new SectionName("$");
 		private readonly string _defaultValidPath = "path";
 		private readonly string _defaultInvalidPath = "!!-invalid";
-		private readonly List<IEndpointAction> _defaultValidActionList = new List<IEndpointAction>
+		private readonly List<EndpointAction> _defaultValidActionList = new List<EndpointAction>
 		{
 			new EndpointAction {}
 		};
@@ -127,7 +127,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var section = new Endpoint
 			{
 				Path = _defaultValidPath,
-				Actions = new List<IEndpointAction>()
+				Actions = new List<EndpointAction>()
 			};
 
 			// Act
@@ -148,7 +148,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var section = new Endpoint
 			{
 				Path = _defaultValidPath,
-				Actions = new List<IEndpointAction>
+				Actions = new List<EndpointAction>
 				{
 					action
 				}
@@ -176,7 +176,7 @@ namespace Mockasin.Mocks.Test.Validation
 			var section = new Endpoint
 			{
 				Path = _defaultValidPath,
-				Actions = new List<IEndpointAction>
+				Actions = new List<EndpointAction>
 				{
 					action1,
 					action2,
@@ -215,7 +215,7 @@ namespace Mockasin.Mocks.Test.Validation
 			{
 				Path = _defaultValidPath,
 				Actions = _defaultValidActionList,
-				Endpoints = new List<IEndpoint>()
+				Endpoints = new List<Endpoint>()
 			};
 
 			// Act
@@ -239,7 +239,7 @@ namespace Mockasin.Mocks.Test.Validation
 			{
 				Path = _defaultValidPath,
 				Actions = _defaultValidActionList,
-				Endpoints = new List<IEndpoint>
+				Endpoints = new List<Endpoint>
 				{
 					new Endpoint
 					{

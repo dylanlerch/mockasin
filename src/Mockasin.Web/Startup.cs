@@ -38,8 +38,8 @@ namespace Mockasin.Web
 			services.AddSingleton<IRandomService, RandomService>();
 
 			services.AddSingleton<IMockSectionValidator<Response>, ResponseValidator>();
-			services.AddSingleton<IMockSectionValidator<IEndpointAction>, EndpointActionValidator>();
-			services.AddSingleton<IMockSectionValidator<IEndpoint>, EndpointValidator>();
+			services.AddSingleton<IMockSectionValidator<EndpointAction>, EndpointActionValidator>();
+			services.AddSingleton<IMockSectionValidator<Endpoint>, EndpointValidator>();
 			services.AddSingleton<IMockSectionValidator<EndpointsRoot>, EndpointsRootValidator>();
 		}
 

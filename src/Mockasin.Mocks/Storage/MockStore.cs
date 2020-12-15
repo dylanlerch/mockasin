@@ -13,7 +13,7 @@ namespace Mockasin.Mocks.Store
 {
 	public interface IMockStore
 	{
-		IEndpointsRoot GetEndpointsRoot();
+		EndpointsRoot GetEndpointsRoot();
 	}
 
 	public class MockStore : IMockStore
@@ -32,7 +32,7 @@ namespace Mockasin.Mocks.Store
 			_logger = logger;
 		}
 
-		public IEndpointsRoot GetEndpointsRoot()
+		public EndpointsRoot GetEndpointsRoot()
 		{
 			lock (_responsesLock)
 			{

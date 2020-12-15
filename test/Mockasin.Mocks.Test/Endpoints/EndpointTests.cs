@@ -119,7 +119,7 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetActionWithMatchingMethod_NoActions_ReturnsNull()
 		{
 			// Arrange
-			var endpoint = new Endpoint { Actions = new List<IEndpointAction>() };
+			var endpoint = new Endpoint { Actions = new List<EndpointAction>() };
 
 			// Act
 			var action = endpoint.GetActionWithMatchingMethod("anyMethod");
@@ -132,11 +132,11 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetActionWithMatchingMethod_SingleActionMatches_ReturnsSingleAction()
 		{
 			// Arrange
-			var action = new Mock<IEndpointAction>();
+			var action = new Mock<EndpointAction>();
 			action.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(true);
 			var endpoint = new Endpoint
 			{
-				Actions = new List<IEndpointAction> { action.Object }
+				Actions = new List<EndpointAction> { action.Object }
 			};
 
 			// Act
@@ -150,15 +150,15 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetActionWithMatchingMethod_MultipleActionMatches_ReturnsFirstAction()
 		{
 			// Arrange
-			var action1 = new Mock<IEndpointAction>();
+			var action1 = new Mock<EndpointAction>();
 			action1.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(true);
 
-			var action2 = new Mock<IEndpointAction>();
+			var action2 = new Mock<EndpointAction>();
 			action2.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(true);
 
 			var endpoint = new Endpoint
 			{
-				Actions = new List<IEndpointAction> { action1.Object, action2.Object }
+				Actions = new List<EndpointAction> { action1.Object, action2.Object }
 			};
 
 			// Act
@@ -172,15 +172,15 @@ namespace Mockasin.Mocks.Test.Endpoints
 		public void GetActionWithMatchingMethod_MultipleActionsNoneMatch_ReturnNull()
 		{
 			// Arrange
-			var action1 = new Mock<IEndpointAction>();
+			var action1 = new Mock<EndpointAction>();
 			action1.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(false);
 
-			var action2 = new Mock<IEndpointAction>();
+			var action2 = new Mock<EndpointAction>();
 			action2.Setup(m => m.MatchesMethod(It.IsAny<string>())).Returns(false);
 
 			var endpoint = new Endpoint
 			{
-				Actions = new List<IEndpointAction> { action1.Object, action2.Object }
+				Actions = new List<EndpointAction> { action1.Object, action2.Object }
 			};
 
 			// Act
