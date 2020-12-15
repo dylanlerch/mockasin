@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Mockasin.Mocks.Configuration;
 using Mockasin.Mocks.Endpoints;
 using Mockasin.Mocks.Router;
+using Mockasin.Mocks.Store;
 using Mockasin.Mocks.Validation;
 using Mockasin.Mocks.Validation.Abstractions;
 using Mockasin.Services;
@@ -32,6 +33,7 @@ namespace Mockasin.Web
 			services.AddSingleton<IMockSettings>(c => c.GetService<Settings>());
 			
 			services.AddSingleton<IMockRouter, MockRouter>();
+			services.AddSingleton<IMockStore, MockStore>();
 
 			services.AddSingleton<IRandomService, RandomService>();
 

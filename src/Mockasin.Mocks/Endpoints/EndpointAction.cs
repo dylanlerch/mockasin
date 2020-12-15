@@ -30,8 +30,6 @@ namespace Mockasin.Mocks.Endpoints
 		[JsonPropertyName("responses")]
 		public List<Response> Responses { get; set; } = new List<Response>();
 
-		private static readonly Random _random = new Random();
-
 		public bool MatchesMethod(string method)
 		{
 			var actionMethodUpper = Method.Trim().ToUpperInvariant();

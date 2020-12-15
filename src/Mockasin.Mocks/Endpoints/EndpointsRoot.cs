@@ -1,19 +1,18 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Security;
-using System.Text;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.Logging;
 using Mockasin.Mocks.Router;
-using Mockasin.Mocks.Validation;
-using Mockasin.Mocks.Validation.Abstractions;
 using Mockasin.Services;
 
 namespace Mockasin.Mocks.Endpoints
 {
-	public class EndpointsRoot
+	public interface IEndpointsRoot
+	{
+		List<IEndpoint> Endpoints { get; }
+		EndpointsRootStatus Status { get; }
+		Response GetResponse(string method, string path, IRandomService random);
+	}
+
+	public class EndpointsRoot : IEndpointsRoot
 	{
 		[JsonPropertyName("endpoints")]
 		public List<IEndpoint> Endpoints { get; set; }
@@ -30,8 +29,24 @@ namespace Mockasin.Mocks.Endpoints
 
 		public Response GetResponse(string method, string path, IRandomService random)
 		{
+			if (Status.IsInvalid)
+			{
+				// If the EndpointsRoot is in an error state, return the error
+				// message immediately.
+				return ErrorResponse(Status.ErrorMessage);
+			}
+
+			// Otherwise, we know we have a valid endpoint structure. Get the
+			// matching endpoint if there is one.
 			var pathParts = path.SplitPath();
-			return GetResponseForPathParts(method, pathParts, Endpoints, random);
+			var response = GetResponseForPathParts(method, pathParts, Endpoints, random);
+
+			if (response is null)
+			{
+				return NotFoundResponse();
+			}
+
+			return response;
 		}
 
 		private Response GetResponseForPathParts(string method, string[] pathParts, List<IEndpoint> endpoints, IRandomService random)
@@ -77,49 +92,21 @@ namespace Mockasin.Mocks.Endpoints
 			return null;
 		}
 
-		public static EndpointsRoot LoadFromFile(string fileName, IMockSectionValidator<EndpointsRoot> validator, ILogger logger = null)
+		private Response NotFoundResponse()
 		{
-			EndpointsRoot root;
-
-			try
+			return new Response
 			{
-				var file = File.ReadAllText(fileName);
-				root = JsonSerializer.Deserialize<EndpointsRoot>(file);
-			}
-			catch (Exception e) when (e is ArgumentException || e is ArgumentNullException || e is PathTooLongException || e is DirectoryNotFoundException || e is IOException || e is UnauthorizedAccessException || e is FileNotFoundException || e is NotSupportedException || e is SecurityException)
+				StatusCode = 404
+			};
+		}
+
+		private Response ErrorResponse(string errorMessage)
+		{
+			return new Response
 			{
-				return new EndpointsRoot($"Error loading configuration file: {e.Message}");
-			}
-			catch (JsonException e)
-			{
-				return new EndpointsRoot($"Error reading configuration file: {e.Message}");
-			}
-			catch (Exception e)
-			{
-				var errorMessage = $"An unexpected error occurred attemping to read the configuration file.";
-				logger.LogError(e, errorMessage);
-				return new EndpointsRoot(errorMessage);
-			}
-
-			var validationResult = validator.Validate(root, new SectionName("$"));
-
-			if (validationResult.HasErrors)
-			{
-				var errorMessage = new StringBuilder();
-				errorMessage.AppendLine("Configuration file was read correctly but failed validation. Errors:");
-
-				foreach (var validationError in validationResult.Errors)
-				{
-					errorMessage.AppendLine($"  - {validationError}");
-				}
-
-				// Remove the final new line character
-				errorMessage.Length--;
-
-				return new EndpointsRoot(errorMessage.ToString());
-			}
-
-			return root;
+				StatusCode = 500,
+				StringBody = errorMessage
+			};
 		}
 	}
 }
